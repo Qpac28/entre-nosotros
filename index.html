@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entre Nosotros: Couples Card Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#e63956" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Entre Nosotros" />
+</head>
+<body>
+
+  <!-- Shared gradient defs for glossy 3D-style card icons -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <radialGradient id="gradWine" cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="#ff9fb3" />
+        <stop offset="60%" stop-color="#e63956" />
+        <stop offset="100%" stop-color="#7a1326" />
+      </radialGradient>
+      <radialGradient id="gradGold" cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="#fff3c4" />
+        <stop offset="55%" stop-color="#f4c430" />
+        <stop offset="100%" stop-color="#9c7200" />
+      </radialGradient>
+      <radialGradient id="gradRose" cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="#ffe3e8" />
+        <stop offset="55%" stop-color="#e2a8af" />
+        <stop offset="100%" stop-color="#8a5a61" />
+      </radialGradient>
+      <radialGradient id="gradFlame" cx="40%" cy="25%" r="80%">
+        <stop offset="0%" stop-color="#fff6c0" />
+        <stop offset="45%" stop-color="#ff708f" />
+        <stop offset="100%" stop-color="#8f0f2b" />
+      </radialGradient>
+      <radialGradient id="gradIce" cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="#eafcff" />
+        <stop offset="55%" stop-color="#8fd8e0" />
+        <stop offset="100%" stop-color="#2c6b74" />
+      </radialGradient>
+      <radialGradient id="gradExtreme" cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="#ff4d6d" />
+        <stop offset="55%" stop-color="#8f0f2b" />
+        <stop offset="100%" stop-color="#1a0208" />
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <!-- Ambient Embers Generator -->
+  <div id="emberContainer"></div>
+
+  <!-- Pre-Game Setup Modal -->
+  <div class="modal-overlay" id="setupModal">
+    <div class="modal-card">
+      <h2 id="modalTitle">Entre Nosotros Setup</h2>
+      <p id="modalDesc">Configure your boundaries before diving in.</p>
+      <button class="btn btn-secondary" style="width: 100%; margin-bottom: 14px; font-size: 0.8rem;" id="htpLinkBtn" onclick="openHowToPlay()">❓ How to Play</button>
+
+      <div class="setup-group">
+        <label id="labelLanguage">Language:</label>
+        <select id="setupLanguage" onchange="setLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+
+      <div class="setup-group">
+        <label id="labelPlayerCount">Number of Players:</label>
+        <select id="setupPlayerCount" onchange="renderNameInputs(true)">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+
+      <div class="setup-group">
+        <label id="labelNames">Player Names (optional):</label>
+        <div class="form-row" id="nameInputsContainer" style="flex-wrap: wrap;"></div>
+      </div>
+
+      <div class="setup-group">
+        <label id="labelPassLimit">Free Pass Limit per Player:</label>
+        <select id="setupPassLimit">
+          <option value="999" id="optPassInf">Unlimited Passes</option>
+          <option value="3" id="optPass3">3 Passes Max</option>
+          <option value="2" id="optPass2">2 Passes Max</option>
+          <option value="1" id="optPass1">1 Pass Only</option>
+        </select>
+      </div>
+
+      <div class="setup-group">
+        <label id="labelDrinkDares">Include Drink Dares / Tragos:</label>
+        <select id="setupDrinkDares">
+          <option value="yes" id="optDrinkYes">Yes, include drink dares</option>
+          <option value="no" id="optDrinkNo">No, keep it non-alcoholic</option>
+        </select>
+      </div>
+
+      <div class="setup-group">
+        <label id="labelExtreme">Include Extreme Dares (18+, opt-in):</label>
+        <select id="setupExtreme">
+          <option value="no" id="optExtremeNo" selected>No, stay at Power & Fantasy max</option>
+          <option value="yes" id="optExtremeYes">Yes, include extreme dares</option>
+        </select>
+      </div>
+
+      <div class="setup-group">
+        <label id="labelSound">Sound Effects:</label>
+        <select id="setupSound">
+          <option value="on" id="optSoundOn">Sound On</option>
+          <option value="off" id="optSoundOff">Sound Off</option>
+        </select>
+      </div>
+
+      <div class="custom-section" style="margin-bottom: 16px; text-align: left;">
+        <h3 id="customHeader">+ Sneak a Custom Card</h3>
+        <div class="form-row">
+          <select id="customTier">
+            <option value="1" id="optTier1">Level 1: Spark</option>
+            <option value="2" id="optTier2">Level 2: Sensory</option>
+            <option value="3" id="optTier3">Level 3: Power</option>
+            <option value="4" id="optTier4">Level 4: Extreme</option>
+          </select>
+          <select id="customType">
+            <option value="Truth" id="optTruth">Truth</option>
+            <option value="Dare" id="optDare">Dare</option>
+            <option value="Drink" id="optDrink">Drink</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <input type="text" id="customPrompt" placeholder="Type your secret prompt..." />
+        </div>
+        <button class="btn" id="addCustomBtn" style="width: 100%;" onclick="addCustomCard()">Add to Deck</button>
+
+        <div class="form-row" style="margin-top: 10px;">
+          <input type="file" id="importPackInput" accept=".json,application/json" onchange="handleExpansionPackFile(event)" style="font-size: 0.72rem;" />
+        </div>
+        <p id="importPackHint" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Import a .json expansion pack</p>
+      </div>
+
+      <button class="btn" style="width: 100%; margin-top: 8px;" id="startBtn" onclick="startGameSession()">Start Playing 🔥</button>
+    </div>
+  </div>
+
+  <!-- Penalty Wheel Modal (shown when a player's passes run out) -->
+  <div class="modal-overlay" id="penaltyWheelModal" style="display: none;">
+    <div class="modal-card" style="max-width: 320px;">
+      <h2 id="wheelTitle">No Passes Left!</h2>
+      <p id="wheelDesc">Spin the Penalty Wheel to see your fate.</p>
+      <div class="wheel-stage">
+        <div class="wheel-pointer"></div>
+        <div class="wheel-rotor" id="wheelRotor"></div>
+      </div>
+      <div class="wheel-result" id="wheelResult" style="display: none;"></div>
+      <button class="btn" id="wheelSpinBtn" style="width: 100%; margin-top: 12px;" onclick="spinPenaltyWheel()">Spin the Wheel 🎡</button>
+      <button class="btn btn-secondary" id="wheelContinueBtn" style="width: 100%; margin-top: 12px; display: none;" onclick="continuePenalty()">Continue ➔</button>
+    </div>
+  </div>
+
+  <!-- Session Recap Modal (opened on demand from the header) -->
+  <div class="modal-overlay" id="recapModal" style="display: none;">
+    <div class="modal-card">
+      <h2 id="recapTitle">Tonight's Recap</h2>
+      <div class="setup-group" style="text-align: center;">
+        <p class="recap-stat" id="recapHeat"></p>
+        <p class="recap-stat" id="recapCards"></p>
+        <p class="recap-stat" id="recapPasses"></p>
+        <p class="recap-stat" id="recapTime"></p>
+        <p class="recap-stat" id="recapFinale"></p>
+      </div>
+      <div class="recap-badges" id="recapBadges"></div>
+      <button class="btn" style="width: 100%;" id="recapCloseBtn" onclick="closeRecap()">Close</button>
+    </div>
+  </div>
+
+  <!-- Safe Word / Pause Modal -->
+  <div class="modal-overlay" id="safePauseModal" style="display: none;">
+    <div class="modal-card">
+      <h2 id="safePauseTitle">Paused</h2>
+      <p id="safePauseDesc">Take a breath. Check in with each other. Resume whenever you're both ready — no rush, no pressure.</p>
+      <button class="btn" style="width: 100%;" id="safePauseResumeBtn" onclick="closeSafePause()">Resume</button>
+    </div>
+  </div>
+
+  <!-- How to Play Modal -->
+  <div class="modal-overlay" id="howToPlayModal" style="display: none;">
+    <div class="modal-card">
+      <h2 id="htpTitle">How to Play</h2>
+      <div id="htpContent" style="text-align: left;"></div>
+      <button class="btn" style="width: 100%; margin-top: 8px;" id="htpCloseBtn" onclick="closeHowToPlay()">Got it</button>
+    </div>
+  </div>
+
+  <div class="header-bar">
+    <span style="font-size: 0.72rem; color: var(--rose-gold);" id="topEdition">🔥 18+ Edition</span>
+    <div class="header-controls">
+      <button class="mute-toggle" id="howToPlayBtn" onclick="openHowToPlay()" title="How to play">❓</button>
+      <button class="mute-toggle" id="safePauseBtn" onclick="openSafePause()" title="Pause / safe word">🛑</button>
+      <button class="mute-toggle" id="recapBtn" onclick="openRecap()" title="Session recap">📊</button>
+      <button class="mute-toggle" id="muteBtn" onclick="toggleMute()" title="Toggle sound">🔊</button>
+      <button class="lang-toggle" id="langBtn" onclick="toggleLanguage()">🌐 ES | Español</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>ENTRE NOSOTROS</h1>
+    <p class="subtitle" id="subtitleText">Tap the card to reveal your prompt</p>
+  </header>
+
+  <div class="dashboard-bar">
+    <div class="heat-meter" id="heatMeterDisplay">🔥 Heat: Level 1</div>
+    <div class="pass-tracker" id="passTrackerDisplay">Passes: P1(3) | P2(3)</div>
+  </div>
+
+  <div class="top-bar">
+    <button class="tier-btn active" id="tierAllBtn" onclick="setTier('all', this)">All Levels</button>
+    <button class="tier-btn" id="tier1Btn" onclick="setTier(1, this)">1: Spark</button>
+    <button class="tier-btn" id="tier2Btn" onclick="setTier(2, this)">2: Sensory</button>
+    <button class="tier-btn" id="tier3Btn" onclick="setTier(3, this)">3: Power</button>
+    <button class="tier-btn" id="tier4Btn" onclick="setTier(4, this)" style="display: none;">4: Extreme</button>
+  </div>
+
+  <div class="turn-indicator" id="turnDisplay">Current Turn: Partner 1</div>
+
+  <div class="scene">
+    <div class="card" id="gameCard" onclick="flipCard()">
+      <div class="card-face card-front">
+        <div class="card-front-icon">🍷</div>
+        <h2 id="frontTitle">Tap to Draw</h2>
+        <p id="frontSub">Remember: Green, Yellow, or Pass anytime.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="badge-row">
+          <span id="cardTierLabel">Level 1</span>
+          <span class="type-badge" id="cardTypeLabel">Truth</span>
+        </div>
+
+        <div class="card-of-day-ribbon" id="cardOfDayRibbon" style="display: none;">📅 Card of the Day</div>
+
+        <div class="figurine-container" id="figurineStage">
+          <div class="figurine-inner" id="figurineInner">
+            <svg width="48" height="48" viewBox="0 0 24 24">
+              <path d="M12 21s-7.5-4.6-10-9.3C.5 7.9 2.8 4 6.5 4c2 0 3.6 1.1 4.5 2.7C11.9 5.1 13.5 4 15.5 4 19.2 4 21.5 7.9 20 11.7 19.5 16.4 12 21 12 21z" fill="url(#gradRose)"/>
+              <ellipse cx="9" cy="8" rx="2.6" ry="1.6" fill="rgba(255,255,255,0.35)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="prompt-text" id="cardPrompt">
+          Tap "Next Card" below to start the game!
+        </div>
+
+        <div class="spicy-twist" id="spicyTwistBox" onclick="event.stopPropagation()">
+          🌶️ <span id="spicyText">Bonus Twist</span>
+        </div>
+
+        <div class="timer-box" id="timerBox" onclick="event.stopPropagation()">
+          <div class="timer-display" id="timerDisplay">01:00</div>
+          <button class="btn btn-secondary" id="timerBtn" style="padding: 6px 12px; font-size: 0.78rem;" onclick="toggleTimer()">Start Timer</button>
+        </div>
+
+        <div style="display: flex; gap: 6px; width: 100%;">
+          <button class="btn btn-secondary" id="spicyBtn" style="flex: 1; padding: 6px; font-size: 0.75rem;" onclick="event.stopPropagation(); revealSpicyTwist()">🌶️ Spicier</button>
+          <button class="btn" id="completeBtn" style="flex: 1; padding: 6px; font-size: 0.75rem; background: #2a9d8f;" onclick="event.stopPropagation(); completeCard()">🔥 Done (+Heat)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-secondary" id="passBtn" onclick="passCard()">Pass (Safe Skip)</button>
+    <button class="btn" id="nextBtn" onclick="nextCard(false)">Next Card ➔</button>
+  </div>
+
+  <script src="three.min.js"></script>
+  <script src="three-icon.js"></script>
+  <script src="three-confetti.js"></script>
+  <script src="three-embers.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
