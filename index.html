@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <title>Entre Nosotros: Couples Card Game</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
@@ -140,6 +141,7 @@
           <input type="file" id="importPackInput" accept=".json,application/json" onchange="handleExpansionPackFile(event)" style="font-size: 0.72rem;" />
         </div>
         <p id="importPackHint" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Import a .json expansion pack</p>
+        <button class="btn btn-secondary" id="exportCardsBtn" style="width: 100%; margin-top: 8px; font-size: 0.78rem;" onclick="exportMyCards()">⬇️ Export My Cards</button>
       </div>
 
       <button class="btn" style="width: 100%; margin-top: 8px;" id="startBtn" onclick="startGameSession()">Start Playing 🔥</button>

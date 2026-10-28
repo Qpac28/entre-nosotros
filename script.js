@@ -258,6 +258,8 @@ const uiText = {
     importPackHint: "Import a .json expansion pack",
     importPackSuccess: "cards imported!",
     importPackError: "Invalid file. Expecting a JSON array of cards.",
+    exportCardsBtn: "⬇️ Export My Cards",
+    exportCardsEmpty: "No custom cards to export yet.",
     htpLinkBtn: "❓ How to Play",
     htpTitle: "How to Play",
     htpCloseBtn: "Got it",
@@ -355,6 +357,8 @@ const uiText = {
     importPackHint: "Importa un paquete de expansión .json",
     importPackSuccess: "¡cartas importadas!",
     importPackError: "Archivo inválido. Se espera un arreglo JSON de cartas.",
+    exportCardsBtn: "⬇️ Exportar Mis Cartas",
+    exportCardsEmpty: "Aún no hay cartas personalizadas para exportar.",
     htpLinkBtn: "❓ Cómo Jugar",
     htpTitle: "Cómo Jugar",
     htpCloseBtn: "Entendido",
@@ -993,7 +997,7 @@ function handleExpansionPackFile(event) {
       const parsed = JSON.parse(reader.result);
       if (!Array.isArray(parsed)) throw new Error("not an array");
       const valid = parsed.filter((c) =>
-        [1, 2, 3].includes(c.tier) &&
+        [1, 2, 3, 4].includes(c.tier) &&
         ["Truth", "Dare", "Drink"].includes(c.type) &&
         c.text && typeof c.text.en === "string" && typeof c.text.es === "string"
       );
@@ -1011,6 +1015,24 @@ function handleExpansionPackFile(event) {
     event.target.value = "";
   };
   reader.readAsText(file);
+}
+
+function exportMyCards() {
+  const combined = [...customDeck, ...importedDeck];
+  if (combined.length === 0) {
+    alert(uiText[currentLang].exportCardsEmpty);
+    return;
+  }
+  const exportable = combined.map(({ tier, type, time, text, twist }) => ({ tier, type, time, text, twist }));
+  const blob = new Blob([JSON.stringify(exportable, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "entre-nosotros-cards.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function startGameSession() {
@@ -1141,6 +1163,7 @@ function updateUIText() {
   document.getElementById("customPrompt").placeholder = t.placeholder;
   document.getElementById("addCustomBtn").textContent = t.addCustomBtn;
   document.getElementById("importPackHint").textContent = t.importPackHint;
+  document.getElementById("exportCardsBtn").textContent = t.exportCardsBtn;
 
   // Setup modal text
   document.getElementById("modalTitle").textContent = t.modalTitle;
