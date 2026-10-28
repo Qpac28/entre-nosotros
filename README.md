@@ -18,15 +18,20 @@ A couples card game (Truth / Dare / Drink) — bilingual (EN/ES), installable as
 | `three.min.js` | Vendored Three.js r160 UMD build (not loaded from a CDN, so the game works fully offline) |
 | `playfair-display-700.woff2` | Vendored Google Font, used for headings only |
 | `manifest.json` / `service-worker.js` / `icon-192.png` / `icon-512.png` | PWA install + offline support |
+| `robots.txt` | Asks crawlers not to index the site (paired with a `noindex` meta tag in `index.html`) |
 
 ## Feature summary
 
 - **Deck:** 54 base cards across Tiers 1–3 (Spark / Sensory / Power & Fantasy) × Truth/Dare/Drink, plus 33 Tier 4 "Extreme" cards (see Content policy below). No-repeat shuffle-bag draw per active filter.
-- **Setup modal:** language, player count (2–4), player names, pass limit, drink-dare toggle, extreme-content toggle (off by default), sound on/off, custom card builder, `.json` expansion-pack import.
+- **Setup modal:** language, player count (2–4), player names, pass limit, drink-dare toggle, extreme-content toggle (off by default), sound on/off, custom card builder, `.json` expansion-pack import/export (all tiers 1–4).
 - **In-game:** Heat Meter (reach 10 → one-time 3D-confetti Finale card), Penalty Wheel (triggered when passes run out), 🛑 pause/safe-word screen, 📅 Card of the Day (date-seeded, same for everyone), 📊 session recap with badges, ❓ How to Play guide.
 - **3D card icon:** drag to tilt, tap to flick-spin, glows via an additive sprite halo, idle shimmer rotation.
 - **Multiplayer:** generalized from an original hardcoded 2-player model to 2–4 players (turn cycling, passes, names, recap all loop over `playerCount`).
 - **PWA:** installable to home screen, offline after first load — **but this only activates when served over http(s)** (GitHub Pages works; opening `index.html` directly as a local file does not support service workers).
+
+## Privacy
+
+The repo is public (required for free GitHub Pages), but the live site has `robots.txt: Disallow: /` and a `noindex, nofollow` meta tag, so it shouldn't surface in search results — still reachable by anyone with the direct link or who browses the GitHub repo.
 
 ## Content policy
 
