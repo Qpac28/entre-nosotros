@@ -30,6 +30,14 @@ function getPlayerLabel(n) {
   return currentLang === "es" ? "Pareja " + n : "Partner " + n;
 }
 
+function openModal(id) {
+  document.getElementById(id).style.display = "flex";
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
 // Rebuilds the N name inputs in setup. preserveTyped keeps whatever's already typed
 // when the player count changes; pass false only for the one-time initial fill.
 function renderNameInputs(preserveTyped) {
@@ -1062,7 +1070,7 @@ function startGameSession() {
   sessionStartTime = Date.now();
   saveState();
 
-  document.getElementById("setupModal").style.display = "none";
+  closeModal("setupModal");
   updatePassDisplay();
   rebuildDrawBag();
   cardOfDayPending = true;
@@ -1286,6 +1294,7 @@ function nextCard(isSkip, forcedCard) {
 
     cardEl.classList.add("is-flipped");
     AudioFX.playChime();
+    if (currentCard.tier === "finale") Confetti3D.burst();
   }, 280);
 }
 
@@ -1328,29 +1337,10 @@ function completeCard() {
   cardsCompleted++;
   if (typeof currentCard.tier === "number") tiersPlayed.add(currentCard.tier);
   if (addHeat(1)) {
-    showFinaleCard();
+    nextCard(false, finaleCard);
   } else {
     nextCard(false);
   }
-}
-
-function showFinaleCard() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-  currentTurn = (currentTurn % playerCount) + 1;
-  document.getElementById("turnDisplay").textContent = uiText[currentLang].turnPrefix + getPlayerLabel(currentTurn);
-
-  const cardEl = document.getElementById("gameCard");
-  cardEl.classList.remove("is-flipped");
-
-  setTimeout(() => {
-    currentCard = finaleCard;
-    renderCurrentCard();
-    document.getElementById("timerBox").classList.remove("visible");
-    cardEl.classList.add("is-flipped");
-    AudioFX.playChime();
-    Confetti3D.burst();
-  }, 280);
 }
 
 // ---------- Penalty Wheel ----------
@@ -1395,7 +1385,7 @@ function openPenaltyWheel() {
   document.getElementById("wheelSpinBtn").style.display = "block";
   document.getElementById("wheelSpinBtn").disabled = false;
   document.getElementById("wheelContinueBtn").style.display = "none";
-  document.getElementById("penaltyWheelModal").style.display = "flex";
+  openModal("penaltyWheelModal");
 }
 
 function spinPenaltyWheel() {
@@ -1430,17 +1420,26 @@ function spinPenaltyWheel() {
 }
 
 function continuePenalty() {
-  document.getElementById("penaltyWheelModal").style.display = "none";
+  closeModal("penaltyWheelModal");
   const effect = pendingPenaltyEffect;
   pendingPenaltyEffect = null;
 
   if (effect === "heat") {
     if (addHeat(2)) {
-      showFinaleCard();
+      nextCard(false, finaleCard);
       return;
     }
-  } else if (effect === "dare" || effect === "partner") {
+  } else if (effect === "dare") {
     forceNextCard("Dare");
+    return;
+  } else if (effect === "truth") {
+    forceNextCard("Truth");
+    return;
+  } else if (effect === "partner") {
+    // "Someone else decides" — picks a random type instead of always forcing a Dare,
+    // so it's a genuinely different outcome from the Double Dare segment.
+    const types = includeDrinks ? ["Truth", "Dare", "Drink"] : ["Truth", "Dare"];
+    forceNextCard(types[Math.floor(Math.random() * types.length)]);
     return;
   }
   nextCard(false);
@@ -1470,7 +1469,7 @@ function openRecap() {
     ? badges.map((b) => `<span class="recap-badge">${b}</span>`).join("")
     : `<span class="recap-badge-empty">${t.badgeNone}</span>`;
 
-  document.getElementById("recapModal").style.display = "flex";
+  openModal("recapModal");
 }
 
 function computeBadges() {
@@ -1491,7 +1490,7 @@ function computeBadges() {
 }
 
 function closeRecap() {
-  document.getElementById("recapModal").style.display = "none";
+  closeModal("recapModal");
 }
 
 function revealSpicyTwist() {
@@ -1544,11 +1543,11 @@ function openSafePause() {
   document.getElementById("safePauseTitle").textContent = t.safePauseTitle;
   document.getElementById("safePauseDesc").textContent = t.safePauseDesc;
   document.getElementById("safePauseResumeBtn").textContent = t.safePauseResumeBtn;
-  document.getElementById("safePauseModal").style.display = "flex";
+  openModal("safePauseModal");
 }
 
 function closeSafePause() {
-  document.getElementById("safePauseModal").style.display = "none";
+  closeModal("safePauseModal");
   if (safePauseResumeTimer && remainingSeconds > 0) {
     startCountdown();
   }
@@ -1561,11 +1560,11 @@ function openHowToPlay() {
   document.getElementById("htpTitle").textContent = t.htpTitle;
   document.getElementById("htpContent").innerHTML = t.htpContent;
   document.getElementById("htpCloseBtn").textContent = t.htpCloseBtn;
-  document.getElementById("howToPlayModal").style.display = "flex";
+  openModal("howToPlayModal");
 }
 
 function closeHowToPlay() {
-  document.getElementById("howToPlayModal").style.display = "none";
+  closeModal("howToPlayModal");
 }
 
 function addCustomCard() {
@@ -1595,7 +1594,59 @@ updateMuteButton();
 document.getElementById("setupSound").value = AudioFX.isMuted() ? "off" : "on";
 document.getElementById("setupPlayerCount").value = playerCount;
 renderNameInputs(false);
-Icon3D.init(document.getElementById("figurineStage"), document.getElementById("figurineInner"));
+
+// Drag-to-tilt / tap-to-spin for the flat SVG icon, used only if the 3D icon fails to init
+function setupFlatIconFallback() {
+  const stage = document.getElementById("figurineStage");
+  const inner = document.getElementById("figurineInner");
+  let dragging = false;
+  let moved = false;
+  let startX = 0;
+  let startY = 0;
+
+  stage.addEventListener("pointerdown", (e) => {
+    e.stopPropagation();
+    dragging = true;
+    moved = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    inner.style.transition = "none";
+  });
+
+  stage.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+    const rotateY = Math.max(-40, Math.min(40, dx / 2));
+    const rotateX = Math.max(-40, Math.min(40, -dy / 2));
+    inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  function endDrag(e) {
+    if (!dragging) return;
+    e.stopPropagation();
+    dragging = false;
+    inner.style.transition = "transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)";
+    if (!moved) {
+      inner.style.transform = "rotateY(360deg)";
+      setTimeout(() => {
+        inner.style.transition = "none";
+        inner.style.transform = "rotateY(0deg)";
+      }, 500);
+    } else {
+      inner.style.transform = "rotateX(0deg) rotateY(0deg)";
+    }
+  }
+
+  stage.addEventListener("pointerup", endDrag);
+  stage.addEventListener("pointerleave", endDrag);
+}
+
+const icon3DReady = Icon3D.init(document.getElementById("figurineStage"), document.getElementById("figurineInner"));
+if (!icon3DReady) {
+  setupFlatIconFallback();
+}
 
 // Service workers require http(s) — this is a no-op when the file is opened directly (file://)
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {

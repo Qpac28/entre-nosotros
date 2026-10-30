@@ -14,22 +14,37 @@ const Icon3D = (() => {
   let lastX = 0;
   let lastY = 0;
 
-  const palette = {
-    t1Truth: 0xe63956,
-    t1Dare: 0x8fd8e0,
-    t1Drink: 0xe63956,
-    t2Truth: 0xf4c430,
-    t2Dare: 0xe2a8af,
-    t2Drink: 0xf4c430,
-    t3Truth: 0xff708f,
-    t3Dare: 0xf4c430,
-    t3Drink: 0xff708f,
-    custom: 0xe2a8af,
-    finale: 0xff708f,
-    t4Truth: 0x8f0f2b,
-    t4Dare: 0x8f0f2b,
-    t4Drink: 0x8f0f2b
+  // Same tier+type -> gradient-name mapping script.js's ICONS object uses for the flat
+  // SVG fallback, so both renderers draw from the one set of gradients defined in
+  // index.html instead of keeping two independently hand-picked color tables.
+  const keyToGradientName = {
+    t1Truth: "gradWine",
+    t1Dare: "gradIce",
+    t1Drink: "gradWine",
+    t2Truth: "gradGold",
+    t2Dare: "gradRose",
+    t2Drink: "gradGold",
+    t3Truth: "gradFlame",
+    t3Dare: "gradGold",
+    t3Drink: "gradFlame",
+    custom: "gradRose",
+    finale: "gradFlame",
+    t4Truth: "gradExtreme",
+    t4Dare: "gradExtreme",
+    t4Drink: "gradExtreme"
   };
+  const colorCache = {};
+
+  function resolveGradientColor(gradientName) {
+    if (colorCache[gradientName] !== undefined) return colorCache[gradientName];
+    const gradEl = document.getElementById(gradientName);
+    const stops = gradEl ? gradEl.querySelectorAll("stop") : [];
+    const midStop = stops[Math.floor(stops.length / 2)] || stops[0];
+    const hex = midStop ? midStop.getAttribute("stop-color") : "#e2a8af";
+    const color = parseInt((hex || "#e2a8af").replace("#", "0x"), 16);
+    colorCache[gradientName] = color;
+    return color;
+  }
 
   const shapeByType = {
     Truth: "heart",
@@ -128,7 +143,7 @@ const Icon3D = (() => {
 
   function setCard(iconKey, type) {
     if (!ready) return;
-    const color = palette[iconKey] !== undefined ? palette[iconKey] : 0xe2a8af;
+    const color = resolveGradientColor(keyToGradientName[iconKey] || "gradRose");
     const shape = shapeByType[type] || "spike";
     const geometry = buildGeometry(shape);
     geometry.center();
