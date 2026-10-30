@@ -23,9 +23,10 @@ A couples card game (Truth / Dare / Drink) — bilingual (EN/ES), installable as
 ## Feature summary
 
 - **Deck:** 54 base cards across Tiers 1–3 (Spark / Sensory / Power & Fantasy) × Truth/Dare/Drink, plus 33 Tier 4 "Extreme" cards (see Content policy below). No-repeat shuffle-bag draw per active filter.
-- **Setup modal:** language, player count (2–4), player names, pass limit, drink-dare toggle, extreme-content toggle (off by default), sound on/off, custom card builder, `.json` expansion-pack import/export (all tiers 1–4).
-- **In-game:** Heat Meter (reach 10 → one-time 3D-confetti Finale card), Penalty Wheel (triggered when passes run out), 🛑 pause/safe-word screen, 📅 Card of the Day (date-seeded, same for everyone), 📊 session recap with badges, ❓ How to Play guide.
-- **3D card icon:** drag to tilt, tap to flick-spin, glows via an additive sprite halo, idle shimmer rotation.
+- **Tier unlocking:** Tier 1 is always open; Tier 2 unlocks at Heat 3, Tier 3 at Heat 6 (`TIER_UNLOCK_HEAT` in script.js). Tier 4 stays gated separately by the extreme-content opt-in, unaffected by Heat.
+- **Setup modal:** language, player count (2–4), player names, pass limit, drink-dare toggle, extreme-content toggle (off by default), sound on/off, custom card builder, `.json` expansion-pack import/export (all tiers 1–4), manage/delete saved custom & imported cards.
+- **In-game:** Heat Meter (reach 10 → one-time 3D-confetti Finale card), Penalty Wheel (triggered when passes run out — Truth/Dare/"someone else decides" random-type/Heat-bonus outcomes), 🛑 pause/safe-word screen, 📅 Card of the Day (date-seeded, same for everyone), 📊 session recap with per-session badges + lifetime stats (games played, cards completed, finales reached, persisted across sessions), ❓ How to Play guide.
+- **3D card icon:** drag to tilt, tap to flick-spin, glows via an additive sprite halo, idle shimmer rotation. Colors are derived at runtime from the shared SVG gradient defs in `index.html` (single source of truth for both the flat-SVG fallback and the 3D material color).
 - **Multiplayer:** generalized from an original hardcoded 2-player model to 2–4 players (turn cycling, passes, names, recap all loop over `playerCount`).
 - **PWA:** installable to home screen, offline after first load — **but this only activates when served over http(s)** (GitHub Pages works; opening `index.html` directly as a local file does not support service workers).
 
