@@ -294,6 +294,7 @@ const uiText = {
     recapLifetimeCards: "Lifetime Cards Completed:",
     recapLifetimeFinales: "Finales Reached:",
     htpLinkBtn: "❓ How to Play",
+    confirmMainScreen: "Return to the main screen? Your current Heat and tier progress will reset (passes, names, and settings stay as you configure them again).",
     htpTitle: "How to Play",
     htpCloseBtn: "Got it",
     htpContent: `
@@ -404,6 +405,7 @@ const uiText = {
     recapLifetimeCards: "Cartas Completadas (Histórico):",
     recapLifetimeFinales: "Finales Alcanzados:",
     htpLinkBtn: "❓ Cómo Jugar",
+    confirmMainScreen: "¿Volver a la pantalla principal? Tu progreso de Calor y niveles se reiniciará (los pases, nombres y ajustes quedan como los vuelvas a configurar).",
     htpTitle: "Cómo Jugar",
     htpCloseBtn: "Entendido",
     htpContent: `
@@ -995,6 +997,110 @@ const defaultDeck = [
     text: { en: "Finish your drink together without breaking contact — hands, eyes, or otherwise — and let whatever happens next happen.", es: "Terminen su trago juntos sin romper el contacto —manos, ojos, o lo que sea— y dejen que pase lo que tenga que pasar." },
     twist: { en: "No one calls it. It just continues.", es: "Nadie lo anuncia. Simplemente continúa." },
     svg: ICONS.t4Drink
+  },
+
+  // --- Adapted from a flirty party-dare list, rewritten to match the app's voice ---
+  {
+    tier: 2, type: "Dare", time: 60,
+    text: { en: "Give your partner a sensual 60-second massage — neck, shoulders, or hands, your choice.", es: "Dale a tu pareja un masaje sensual de 60 segundos —cuello, hombros o manos, tú eliges." },
+    twist: { en: "Finish with a slow kiss wherever you massaged.", es: "Termina con un beso lento donde masajeaste." },
+    svg: ICONS.t2Dare
+  },
+  {
+    tier: 3, type: "Dare", time: 0,
+    text: { en: "Whisper something delightfully dirty directly into your partner's ear.", es: "Susúrrale algo deliciosamente sucio directo al oído de tu pareja." },
+    twist: { en: "Make it even dirtier the second time.", es: "Hazlo aún más sucio la segunda vez." },
+    svg: ICONS.t3Dare
+  },
+  {
+    tier: 3, type: "Dare", time: 0,
+    text: { en: "Remove one item of your clothing, your choice — make it slow.", es: "Quítate una prenda de ropa, tú eliges cuál —hazlo despacio." },
+    twist: { en: "Let your partner choose which item instead.", es: "Deja que tu pareja elija la prenda en su lugar." },
+    svg: ICONS.t3Dare
+  },
+  {
+    tier: 3, type: "Dare", time: 30,
+    text: { en: "Dance for your partner as sensually as you can for 30 seconds — no music needed.", es: "Baila para tu pareja de la forma más sensual posible durante 30 segundos —no necesitas música." },
+    twist: { en: "They pick the next song, and you dance to that one too.", es: "Ellos eligen la siguiente canción, y bailas esa también." },
+    svg: ICONS.t3Dare
+  },
+  {
+    tier: 2, type: "Dare", time: 0,
+    text: { en: "Blindfold your partner and feed them a small bite of something sweet, slowly.", es: "Véndale los ojos a tu pareja y dale de comer un bocado dulce, despacio." },
+    twist: { en: "They have to guess what it is before swallowing.", es: "Debe adivinar qué es antes de tragar." },
+    svg: ICONS.t2Dare
+  },
+  {
+    tier: 2, type: "Truth", time: 0,
+    text: { en: "Describe, in detail, the last truly passionate kiss you remember.", es: "Describe, con detalle, el último beso verdaderamente apasionado que recuerdas." },
+    twist: { en: "Recreate the first three seconds of it right now.", es: "Recrea los primeros tres segundos ahora mismo." },
+    svg: ICONS.t2Truth
+  },
+  {
+    tier: 3, type: "Dare", time: 0,
+    text: { en: "Gently nibble your partner's earlobe.", es: "Muerde suavemente el lóbulo de la oreja de tu pareja." },
+    twist: { en: "Follow it with a slow kiss down their neck.", es: "Sigue con un beso lento bajando por su cuello." },
+    svg: ICONS.t3Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 60,
+    text: { en: "Stare into your partner's eyes for a full 60 seconds without speaking or looking away.", es: "Mira a los ojos de tu pareja durante 60 segundos completos sin hablar ni apartar la mirada." },
+    twist: { en: "Whoever breaks first owes the other a kiss.", es: "Quien rompa primero le debe un beso al otro." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 1, type: "Drink", time: 0,
+    text: { en: "Take a sip of your drink in the slowest, most seductive way you can manage.", es: "Da un sorbo a tu trago de la forma más lenta y seductora que puedas." },
+    twist: { en: "Maintain eye contact with your partner the entire time.", es: "Mantén contacto visual con tu pareja todo el tiempo." },
+    svg: ICONS.t1Drink
+  },
+  {
+    tier: 2, type: "Truth", time: 0,
+    text: { en: "Tell your partner, honestly, what you find physically sexiest about them.", es: "Dile a tu pareja, con honestidad, qué es lo que más te atrae físicamente de ella." },
+    twist: { en: "Kiss that spot right after you say it.", es: "Besa esa parte justo después de decirlo." },
+    svg: ICONS.t2Truth
+  },
+  {
+    tier: 1, type: "Dare", time: 0,
+    text: { en: "Trace your fingertip slowly along your partner's hand and up their arm.", es: "Recorre lentamente con tu dedo la mano de tu pareja y sube por su brazo." },
+    twist: { en: "Keep going until they tell you to stop.", es: "Sigue hasta que te diga que pares." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 30,
+    text: { en: "Let your partner gently run their fingers through your hair for 30 seconds.", es: "Deja que tu pareja pase suavemente los dedos por tu cabello durante 30 segundos." },
+    twist: { en: "Close your eyes the whole time.", es: "Mantén los ojos cerrados todo el tiempo." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 3, type: "Dare", time: 0,
+    text: { en: "Start telling a steamy made-up story about the two of you — then stop right at the best part.", es: "Empieza a contar una historia inventada y ardiente sobre ustedes dos —y detente justo en la mejor parte." },
+    twist: { en: "Your partner has to beg you to finish it.", es: "Tu pareja tiene que rogarte que la termines." },
+    svg: ICONS.t3Dare
+  },
+  {
+    tier: 3, type: "Dare", time: 0,
+    text: { en: "Lean in like you're about to kiss your partner — then stop just before your lips touch.", es: "Acércate como si fueras a besar a tu pareja —y detente justo antes de que se toquen los labios." },
+    twist: { en: "Hold there for 10 seconds before you actually kiss.", es: "Mantente ahí 10 segundos antes de besarla de verdad." },
+    svg: ICONS.t3Dare
+  },
+  {
+    tier: 4, type: "Dare", time: 0,
+    text: { en: "Guide your partner's hand to the most sensitive spot on your body (above the waist).", es: "Lleva la mano de tu pareja a la parte más sensible de tu cuerpo (por encima de la cintura)." },
+    twist: { en: "They get 10 seconds there before you guide them away.", es: "Tienen 10 segundos ahí antes de que los alejes." },
+    svg: ICONS.t4Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 120,
+    text: { en: "Give your partner a slow 2-minute scalp massage.", es: "Dale a tu pareja un masaje de cuero cabelludo lento de 2 minutos." },
+    twist: { en: "Whisper something sweet the entire time.", es: "Susúrrale algo dulce todo el tiempo." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 2, type: "Truth", time: 0,
+    text: { en: "Pitch your partner your most romantic (or funniest) idea for how tonight should end.", es: "Preséntale a tu pareja tu idea más romántica (o más graciosa) de cómo debería terminar la noche." },
+    twist: { en: "They get veto power — but have to suggest an alternative.", es: "Ellos pueden vetarla —pero deben proponer una alternativa." },
+    svg: ICONS.t2Truth
   }
 ];
 
@@ -1700,6 +1806,21 @@ function openHowToPlay() {
 
 function closeHowToPlay() {
   closeModal("howToPlayModal");
+}
+
+// ---------- Back to Main Screen ----------
+function goToMainScreen() {
+  if (!confirm(uiText[currentLang].confirmMainScreen)) return;
+  clearInterval(timerInterval);
+  timerInterval = null;
+  heatPoints = 0;
+  finaleShown = false;
+  tiersPlayed = new Set();
+  activeTier = "all";
+  document.querySelectorAll(".tier-btn").forEach((b) => b.classList.remove("active"));
+  document.getElementById("tierAllBtn").classList.add("active");
+  updateUIText();
+  openModal("setupModal");
 }
 
 function addCustomCard() {
