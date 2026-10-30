@@ -142,6 +142,7 @@
         </div>
         <p id="importPackHint" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Import a .json expansion pack</p>
         <button class="btn btn-secondary" id="exportCardsBtn" style="width: 100%; margin-top: 8px; font-size: 0.78rem;" onclick="exportMyCards()">⬇️ Export My Cards</button>
+        <button class="btn btn-secondary" id="manageCardsBtn" style="width: 100%; margin-top: 8px; font-size: 0.78rem;" onclick="openManageCards()">📋 Manage My Cards</button>
       </div>
 
       <button class="btn" style="width: 100%; margin-top: 8px;" id="startBtn" onclick="startGameSession()">Start Playing 🔥</button>
@@ -175,7 +176,22 @@
         <p class="recap-stat" id="recapFinale"></p>
       </div>
       <div class="recap-badges" id="recapBadges"></div>
+      <h3 class="recap-lifetime-title" id="recapLifetimeTitle">All-Time</h3>
+      <div class="setup-group" style="text-align: center;">
+        <p class="recap-stat" id="recapLifetimeGames"></p>
+        <p class="recap-stat" id="recapLifetimeCards"></p>
+        <p class="recap-stat" id="recapLifetimeFinales"></p>
+      </div>
       <button class="btn" style="width: 100%;" id="recapCloseBtn" onclick="closeRecap()">Close</button>
+    </div>
+  </div>
+
+  <!-- Manage / Delete Custom Cards Modal -->
+  <div class="modal-overlay" id="manageCardsModal" style="display: none;">
+    <div class="modal-card">
+      <h2 id="manageCardsTitle">Manage My Cards</h2>
+      <div id="manageCardsList" style="text-align: left; max-height: 50vh; overflow-y: auto;"></div>
+      <button class="btn" style="width: 100%; margin-top: 12px;" id="manageCardsCloseBtn" onclick="closeModal('manageCardsModal')">Close</button>
     </div>
   </div>
 

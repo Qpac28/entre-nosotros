@@ -23,6 +23,21 @@ let sessionStartTime = null;
 let cardOfDayPending = false;
 let tiersPlayed = new Set();
 
+// Tier 2/3 unlock as Heat rises, so progression feels earned (Tier 4 stays gated by
+// the separate includeExtreme opt-in, unaffected by heat)
+const TIER_UNLOCK_HEAT = { 2: 3, 3: 6 };
+
+let lifetimeStats = JSON.parse(localStorage.getItem("afterHoursLifetimeStats") || "null") || {
+  gamesPlayed: 0,
+  cardsCompleted: 0,
+  finalesReached: 0,
+  badgesEarned: []
+};
+
+function saveLifetimeStats() {
+  localStorage.setItem("afterHoursLifetimeStats", JSON.stringify(lifetimeStats));
+}
+
 // Falls back to "Partner N" / "Pareja N" when no custom name was set
 function getPlayerLabel(n) {
   const custom = (playerNames[n] || "").trim();
@@ -268,11 +283,22 @@ const uiText = {
     importPackError: "Invalid file. Expecting a JSON array of cards.",
     exportCardsBtn: "⬇️ Export My Cards",
     exportCardsEmpty: "No custom cards to export yet.",
+    tierLockedHint: "Unlocks at Heat",
+    manageCardsBtn: "📋 Manage My Cards",
+    manageCardsTitle: "Manage My Cards",
+    manageCardsEmpty: "No custom or imported cards yet.",
+    manageCardsDelete: "Delete",
+    manageCardsCloseBtn: "Close",
+    recapLifetimeTitle: "All-Time",
+    recapLifetimeGames: "Games Played:",
+    recapLifetimeCards: "Lifetime Cards Completed:",
+    recapLifetimeFinales: "Finales Reached:",
     htpLinkBtn: "❓ How to Play",
     htpTitle: "How to Play",
     htpCloseBtn: "Got it",
     htpContent: `
-      <p class="htp-line"><strong>Tiers:</strong> Level 1 Spark is light and flirty, Level 2 Sensory focuses on touch and the senses, Level 3 Power & Fantasy leans into roleplay and control. If enabled in setup, Level 4 Extreme pushes further still. "All Levels" draws a random mix from every tier you've enabled.</p>
+      <p class="htp-line"><strong>Tiers:</strong> Level 1 Spark is light and flirty, Level 2 Sensory focuses on touch and the senses, Level 3 Power & Fantasy leans into roleplay and control. If enabled in setup, Level 4 Extreme pushes further still. "All Levels" draws a random mix from every tier you've unlocked.</p>
+      <p class="htp-line"><strong>🔒 Tier Unlocking:</strong> Level 1 is always open. Level 2 unlocks at Heat 3, Level 3 at Heat 6 — progression is earned as you play, not just a filter toggle.</p>
       <p class="htp-line"><strong>Card Types:</strong> Truth = answer a question. Dare = complete a physical challenge (some have a timer). Drink = a toast or sip-based challenge.</p>
       <p class="htp-line"><strong>🌶️ Spicier:</strong> reveals a bonus twist that raises the stakes on the current card.</p>
       <p class="htp-line"><strong>🔥 Heat Meter:</strong> tap "Done (+Heat)" after completing a card. Reach Heat 10 to unlock a one-time Finale card.</p>
@@ -280,8 +306,8 @@ const uiText = {
       <p class="htp-line"><strong>🎡 Penalty Wheel:</strong> a random outcome — a sip, a truth, a forced dare, a kiss, a heat bonus, and more.</p>
       <p class="htp-line"><strong>🛑 Pause:</strong> tap anytime to freeze the game and take a breather. No rush, no pressure.</p>
       <p class="htp-line"><strong>📅 Card of the Day:</strong> the first card each session is the same for everyone on that date.</p>
-      <p class="htp-line"><strong>📊 Recap:</strong> check your heat level, cards completed, passes used, and badges earned at any point.</p>
-      <p class="htp-line"><strong>✍️ Custom Cards & Packs:</strong> add your own prompts in setup, or import a .json expansion pack.</p>
+      <p class="htp-line"><strong>📊 Recap:</strong> check your heat level, cards completed, passes used, badges, and lifetime stats at any point.</p>
+      <p class="htp-line"><strong>✍️ Custom Cards & Packs:</strong> add your own prompts in setup, import a .json expansion pack, or manage/export/delete what you've added.</p>
     `
   },
   es: {
@@ -367,11 +393,22 @@ const uiText = {
     importPackError: "Archivo inválido. Se espera un arreglo JSON de cartas.",
     exportCardsBtn: "⬇️ Exportar Mis Cartas",
     exportCardsEmpty: "Aún no hay cartas personalizadas para exportar.",
+    tierLockedHint: "Se desbloquea con Calor",
+    manageCardsBtn: "📋 Administrar Mis Cartas",
+    manageCardsTitle: "Administrar Mis Cartas",
+    manageCardsEmpty: "Aún no hay cartas personalizadas o importadas.",
+    manageCardsDelete: "Eliminar",
+    manageCardsCloseBtn: "Cerrar",
+    recapLifetimeTitle: "Histórico",
+    recapLifetimeGames: "Partidas Jugadas:",
+    recapLifetimeCards: "Cartas Completadas (Histórico):",
+    recapLifetimeFinales: "Finales Alcanzados:",
     htpLinkBtn: "❓ Cómo Jugar",
     htpTitle: "Cómo Jugar",
     htpCloseBtn: "Entendido",
     htpContent: `
-      <p class="htp-line"><strong>Niveles:</strong> El Nivel 1 Chispa es ligero y coqueto, el Nivel 2 Sensorial se enfoca en el tacto y los sentidos, el Nivel 3 Poder y Fantasía se inclina hacia el juego de roles y el control. Si lo activas en la configuración, el Nivel 4 Extremo va aún más lejos. "Todos los Niveles" saca una mezcla aleatoria de cada nivel que hayas activado.</p>
+      <p class="htp-line"><strong>Niveles:</strong> El Nivel 1 Chispa es ligero y coqueto, el Nivel 2 Sensorial se enfoca en el tacto y los sentidos, el Nivel 3 Poder y Fantasía se inclina hacia el juego de roles y el control. Si lo activas en la configuración, el Nivel 4 Extremo va aún más lejos. "Todos los Niveles" saca una mezcla aleatoria de cada nivel que hayas desbloqueado.</p>
+      <p class="htp-line"><strong>🔒 Desbloqueo de Niveles:</strong> El Nivel 1 siempre está disponible. El Nivel 2 se desbloquea con 3 de Calor, el Nivel 3 con 6 —el progreso se gana jugando, no es solo un filtro.</p>
       <p class="htp-line"><strong>Tipos de Carta:</strong> Verdad = responde una pregunta. Reto = completa un desafío físico (algunos tienen temporizador). Trago = un brindis o reto con bebida.</p>
       <p class="htp-line"><strong>🌶️ Más Picante:</strong> revela un giro extra que sube la apuesta de la carta actual.</p>
       <p class="htp-line"><strong>🔥 Medidor de Calor:</strong> toca "Listo (+Calor)" después de completar una carta. Llega a 10 de Calor para desbloquear una carta Final única.</p>
@@ -379,8 +416,8 @@ const uiText = {
       <p class="htp-line"><strong>🎡 Rueda de Penitencia:</strong> un resultado aleatorio —un trago, una verdad, un reto forzado, un beso, un bono de calor, y más.</p>
       <p class="htp-line"><strong>🛑 Pausa:</strong> tócalo cuando quieras para congelar el juego y respirar. Sin prisa, sin presión.</p>
       <p class="htp-line"><strong>📅 Carta del Día:</strong> la primera carta de cada sesión es la misma para todos en esa fecha.</p>
-      <p class="htp-line"><strong>📊 Resumen:</strong> revisa tu nivel de calor, cartas completadas, pases usados e insignias ganadas en cualquier momento.</p>
-      <p class="htp-line"><strong>✍️ Cartas Personalizadas y Paquetes:</strong> añade tus propios retos en la configuración, o importa un paquete de expansión .json.</p>
+      <p class="htp-line"><strong>📊 Resumen:</strong> revisa tu nivel de calor, cartas completadas, pases usados, insignias y estadísticas históricas en cualquier momento.</p>
+      <p class="htp-line"><strong>✍️ Cartas Personalizadas y Paquetes:</strong> añade tus propios retos en la configuración, importa un paquete de expansión .json, o administra/exporta/elimina lo que ya añadiste.</p>
     `
   }
 };
@@ -1043,6 +1080,56 @@ function exportMyCards() {
   URL.revokeObjectURL(url);
 }
 
+// ---------- Manage / Delete Custom Cards ----------
+function openManageCards() {
+  const t = uiText[currentLang];
+  document.getElementById("manageCardsTitle").textContent = t.manageCardsTitle;
+  document.getElementById("manageCardsCloseBtn").textContent = t.manageCardsCloseBtn;
+  renderManageCardsList();
+  openModal("manageCardsModal");
+}
+
+function renderManageCardsList() {
+  const t = uiText[currentLang];
+  const listEl = document.getElementById("manageCardsList");
+  const all = [
+    ...customDeck.map((card, index) => ({ card, source: "custom", index })),
+    ...importedDeck.map((card, index) => ({ card, source: "imported", index }))
+  ];
+
+  if (all.length === 0) {
+    listEl.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">${t.manageCardsEmpty}</p>`;
+    return;
+  }
+
+  listEl.innerHTML = all.map(({ card, source, index }) => {
+    const fullText = card.text[currentLang] || "";
+    const snippet = fullText.length > 70 ? fullText.slice(0, 70) + "…" : fullText;
+    const tierLabel = t.tierLabels[card.tier] || card.tier;
+    const typeLabel = t.typeLabels[card.type] || card.type;
+    return `
+      <div class="manage-card-row">
+        <div class="manage-card-info">
+          <span class="manage-card-badge">${tierLabel} · ${typeLabel}</span>
+          <p class="manage-card-text">${snippet}</p>
+        </div>
+        <button class="manage-card-delete" onclick="deleteManagedCard('${source}', ${index})" title="${t.manageCardsDelete}">🗑️</button>
+      </div>
+    `;
+  }).join("");
+}
+
+function deleteManagedCard(source, index) {
+  if (source === "custom") {
+    customDeck.splice(index, 1);
+    localStorage.setItem("afterHoursCustomDeck", JSON.stringify(customDeck));
+  } else {
+    importedDeck.splice(index, 1);
+    localStorage.setItem("afterHoursImportedDeck", JSON.stringify(importedDeck));
+  }
+  renderManageCardsList();
+}
+
 function startGameSession() {
   passLimit = parseInt(document.getElementById("setupPassLimit").value, 10);
   includeDrinks = document.getElementById("setupDrinkDares").value === "yes";
@@ -1070,6 +1157,9 @@ function startGameSession() {
   sessionStartTime = Date.now();
   saveState();
 
+  lifetimeStats.gamesPlayed++;
+  saveLifetimeStats();
+
   closeModal("setupModal");
   updatePassDisplay();
   rebuildDrawBag();
@@ -1093,8 +1183,11 @@ function rebuildDrawBag() {
 
 // Same date -> same card for everyone, so the first draw of the day feels special
 function getCardOfTheDay() {
+  // Scoped to defaultDeck only (not customDeck/importedDeck) so the date-seeded pick
+  // is genuinely "the same card for everyone," regardless of anyone's custom content.
   let pool = includeDrinks ? defaultDeck : defaultDeck.filter((c) => c.type !== "Drink");
   if (!includeExtreme) pool = pool.filter((c) => c.tier !== 4);
+  pool = pool.filter((c) => heatPoints >= (TIER_UNLOCK_HEAT[c.tier] || 0));
   const dateStr = new Date().toISOString().slice(0, 10);
   let hash = 0;
   for (let i = 0; i < dateStr.length; i++) {
@@ -1132,6 +1225,7 @@ function getActiveDeck() {
   if (!includeExtreme) {
     combined = combined.filter(c => c.tier !== 4);
   }
+  combined = combined.filter(c => heatPoints >= (TIER_UNLOCK_HEAT[c.tier] || 0));
   if (activeTier === "all") return combined;
   return combined.filter(c => c.tier === activeTier);
 }
@@ -1172,6 +1266,7 @@ function updateUIText() {
   document.getElementById("addCustomBtn").textContent = t.addCustomBtn;
   document.getElementById("importPackHint").textContent = t.importPackHint;
   document.getElementById("exportCardsBtn").textContent = t.exportCardsBtn;
+  document.getElementById("manageCardsBtn").textContent = t.manageCardsBtn;
 
   // Setup modal text
   document.getElementById("modalTitle").textContent = t.modalTitle;
@@ -1205,6 +1300,7 @@ function updateUIText() {
   document.getElementById("wheelContinueBtn").textContent = t.wheelContinueBtn;
 
   document.getElementById("heatMeterDisplay").textContent = `🔥 Heat: Level ${Math.floor(heatPoints/3) + 1} (${heatPoints} pts)`;
+  updateTierLockState();
 }
 
 function updatePassDisplay() {
@@ -1242,11 +1338,26 @@ function renderCurrentCard() {
 }
 
 function setTier(tier, btnEl) {
+  if (tier !== "all" && heatPoints < (TIER_UNLOCK_HEAT[tier] || 0)) return;
   activeTier = tier;
   document.querySelectorAll(".tier-btn").forEach(b => b.classList.remove("active"));
   btnEl.classList.add("active");
   rebuildDrawBag();
   nextCard(true);
+}
+
+function updateTierLockState() {
+  const t = uiText[currentLang];
+  const tierLabelKeys = { 2: "tier2", 3: "tier3" };
+  [2, 3].forEach((tier) => {
+    const btn = document.getElementById(`tier${tier}Btn`);
+    const threshold = TIER_UNLOCK_HEAT[tier];
+    const unlocked = heatPoints >= threshold;
+    btn.disabled = !unlocked;
+    btn.classList.toggle("locked", !unlocked);
+    btn.textContent = (unlocked ? "" : "🔒 ") + t[tierLabelKeys[tier]];
+    btn.title = unlocked ? "" : `${t.tierLockedHint} ${threshold}`;
+  });
 }
 
 function flipCard() {
@@ -1335,12 +1446,22 @@ function addHeat(amount) {
 
 function completeCard() {
   cardsCompleted++;
+  lifetimeStats.cardsCompleted++;
+  saveLifetimeStats();
   if (typeof currentCard.tier === "number") tiersPlayed.add(currentCard.tier);
   if (addHeat(1)) {
-    nextCard(false, finaleCard);
+    triggerFinale();
   } else {
     nextCard(false);
   }
+}
+
+// Shared by both ways of reaching Heat 10 (completing a card, or the Penalty Wheel's
+// "+2 Heat" outcome), so the lifetime finale count is only ever recorded in one place.
+function triggerFinale() {
+  lifetimeStats.finalesReached++;
+  saveLifetimeStats();
+  nextCard(false, finaleCard);
 }
 
 // ---------- Penalty Wheel ----------
@@ -1426,7 +1547,7 @@ function continuePenalty() {
 
   if (effect === "heat") {
     if (addHeat(2)) {
-      nextCard(false, finaleCard);
+      triggerFinale();
       return;
     }
   } else if (effect === "dare") {
@@ -1466,8 +1587,22 @@ function openRecap() {
   const badges = computeBadges();
   const badgesEl = document.getElementById("recapBadges");
   badgesEl.innerHTML = badges.length
-    ? badges.map((b) => `<span class="recap-badge">${b}</span>`).join("")
+    ? badges.map((b) => `<span class="recap-badge">${b.label}</span>`).join("")
     : `<span class="recap-badge-empty">${t.badgeNone}</span>`;
+
+  let newlyEarned = false;
+  badges.forEach((b) => {
+    if (!lifetimeStats.badgesEarned.includes(b.key)) {
+      lifetimeStats.badgesEarned.push(b.key);
+      newlyEarned = true;
+    }
+  });
+  if (newlyEarned) saveLifetimeStats();
+
+  document.getElementById("recapLifetimeTitle").textContent = t.recapLifetimeTitle;
+  document.getElementById("recapLifetimeGames").textContent = `${t.recapLifetimeGames} ${lifetimeStats.gamesPlayed}`;
+  document.getElementById("recapLifetimeCards").textContent = `${t.recapLifetimeCards} ${lifetimeStats.cardsCompleted}`;
+  document.getElementById("recapLifetimeFinales").textContent = `${t.recapLifetimeFinales} ${lifetimeStats.finalesReached}`;
 
   openModal("recapModal");
 }
@@ -1478,13 +1613,13 @@ function computeBadges() {
   const noPassesUsed = Array.from({ length: playerCount }, (_, i) => i + 1)
     .every((i) => passesUsedTotal[i] === 0);
   if (cardsCompleted > 0 && noPassesUsed) {
-    badges.push(t.badgeNoPasses);
+    badges.push({ key: "badgeNoPasses", label: t.badgeNoPasses });
   }
   if (tiersPlayed.has(1) && tiersPlayed.has(2) && tiersPlayed.has(3)) {
-    badges.push(t.badgeAllTiers);
+    badges.push({ key: "badgeAllTiers", label: t.badgeAllTiers });
   }
   if (finaleShown) {
-    badges.push(t.badgeFinale);
+    badges.push({ key: "badgeFinale", label: t.badgeFinale });
   }
   return badges;
 }
