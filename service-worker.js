@@ -1,4 +1,4 @@
-const CACHE_NAME = "entre-nosotros-v3";
+const CACHE_NAME = "entre-nosotros-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
