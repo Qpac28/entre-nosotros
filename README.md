@@ -42,4 +42,5 @@ The game includes flirty/suggestive content up through intense power-dynamic and
 
 - Local repo lives at `C:\Users\migue\after-hours\`. Auto-push to `main` is pre-authorized for this repo specifically (user request, 2026-10-25) — every change gets committed and pushed without asking each time.
 - GitHub Pages is configured as "Deploy from a branch: main / root" — pushes to `main` go live within about a minute.
+- **Important PWA gotcha:** `service-worker.js`'s `CACHE_NAME` (currently `entre-nosotros-v4`) must be bumped on every change that touches `index.html`, `style.css`, `script.js`, or any `three-*.js` file, or anyone who already installed the app keeps getting served the old cached version indefinitely. This was missed for several pushes (fixed 2026-10-31) — bump it every time going forward.
 - No build step. Editing any file and reloading the page (or pushing) is the entire deploy cycle.
