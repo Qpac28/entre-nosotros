@@ -1,47 +1,20 @@
-# Entre Nosotros
+# Cartas en Pareja · Entre Nosotros
 
-A couples card game (Truth / Dare / Drink) — bilingual (EN/ES), installable as a PWA, no build step, no dependencies beyond a vendored copy of Three.js.
+Juego de cartas para parejas (2 jugadores) con estética de lujo, minimalista y directa — bilingüe (`ES`/`EN`), instalable como PWA y ejecutable desde el escritorio (`JUGAR_AHORA.bat`).
 
-**Live site:** https://qpac28.github.io/entre-nosotros/
-**Repo:** https://github.com/Qpac28/entre-nosotros
+## Características Principales
 
-## Files
-
-| File | Purpose |
-|---|---|
-| `index.html` | Page structure: setup modal, game card, penalty wheel modal, recap modal, safe-pause modal, how-to-play modal, shared SVG gradient defs |
-| `style.css` | All styling, including the vendored `Playfair Display` font-face |
-| `script.js` | Game state, deck data, all game logic/UI wiring |
-| `three-icon.js` | Renders the card-back icon as a lit 3D gem/heart/goblet (Three.js), with flat-SVG fallback if WebGL fails |
-| `three-confetti.js` | One-shot 3D confetti burst for the Heat-10 Finale |
-| `three-embers.js` | Background rising-ember particle field (Three.js), falls back to CSS dots |
-| `three.min.js` | Vendored Three.js r160 UMD build (not loaded from a CDN, so the game works fully offline) |
-| `playfair-display-700.woff2` | Vendored Google Font, used for headings only |
-| `manifest.json` / `service-worker.js` / `icon-192.png` / `icon-512.png` | PWA install + offline support |
-| `robots.txt` | Asks crawlers not to index the site (paired with a `noindex` meta tag in `index.html`) |
-
-## Feature summary
-
-- **Deck:** 83 base cards across Tiers 1–3 (Spark / Sensory / Power & Fantasy) × Truth/Dare/Drink, plus 33 Tier 4 "Extreme" cards (see Content policy below). No-repeat shuffle-bag draw per active filter.
-- **Tier unlocking:** Tier 1 is always open; Tier 2 unlocks at Heat 3, Tier 3 at Heat 6 (`TIER_UNLOCK_HEAT` in script.js). Tier 4 stays gated separately by the extreme-content opt-in, unaffected by Heat.
-- **Solo / Long-Distance Mode:** setup toggle that narrows the deck to Truths plus 12 cards explicitly written for texting/calling (`remoteOk: true` on the card), for when players aren't in the same room.
-- **Setup modal:** language, player count (2–4), player names, pass limit, drink-dare toggle, extreme-content toggle (off by default), solo/long-distance toggle, sound on/off, custom card builder, `.json` expansion-pack import/export (all tiers 1–4), manage/delete saved custom & imported cards.
-- **In-game:** Heat Meter (reach 10 → one-time 3D-confetti Finale card), Penalty Wheel (triggered when passes run out — Truth/Dare/"someone else decides" random-type/Heat-bonus outcomes), 🛑 pause/safe-word screen, 🏠 return-to-main-screen (resets Heat/tier progress, re-opens setup), 📅 Card of the Day (date-seeded, same for everyone), 📊 session recap with per-session badges + lifetime stats (games played, cards completed, finales reached, persisted across sessions), ❓ How to Play guide, branded loading screen on launch.
-- **3D card icon:** drag to tilt, tap to flick-spin, glows via an additive sprite halo, idle shimmer rotation. Colors are derived at runtime from the shared SVG gradient defs in `index.html` (single source of truth for both the flat-SVG fallback and the 3D material color).
-- **Multiplayer:** generalized from an original hardcoded 2-player model to 2–4 players (turn cycling, passes, names, recap all loop over `playerCount`).
-- **PWA:** installable to home screen, offline after first load — **but this only activates when served over http(s)** (GitHub Pages works; opening `index.html` directly as a local file does not support service workers).
-
-## Privacy
-
-The repo is public (required for free GitHub Pages), but the live site has `robots.txt: Disallow: /` and a `noindex, nofollow` meta tag, so it shouldn't surface in search results — still reachable by anyone with the direct link or who browses the GitHub repo.
-
-## Content policy
-
-The game includes flirty/suggestive content up through intense power-dynamic and anticipation-driven prompts (Tier 4 "Extreme", opt-in, off by default). **It does not and will not contain explicit sexual act instructions or pornographic descriptions.** Tier 4 is intentionally written to imply and build tension rather than describe explicitly — this is a firm boundary, not a style choice, and was explicitly discussed and agreed with the user.
-
-## Workflow notes
-
-- Local repo lives at `C:\Users\migue\after-hours\`. Auto-push to `main` is pre-authorized for this repo specifically (user request, 2026-10-25) — every change gets committed and pushed without asking each time.
-- GitHub Pages is configured as "Deploy from a branch: main / root" — pushes to `main` go live within about a minute.
-- **Important PWA gotcha:** `service-worker.js`'s `CACHE_NAME` (currently `entre-nosotros-v4`) must be bumped on every change that touches `index.html`, `style.css`, `script.js`, or any `three-*.js` file, or anyone who already installed the app keeps getting served the old cached version indefinitely. This was missed for several pushes (fixed 2026-10-31) — bump it every time going forward.
-- No build step. Editing any file and reloading the page (or pushing) is the entire deploy cycle.
+- **Estética Premium ("Cero AI Slop"):**
+  - Escenario fotorrealista de satén negro, velas encendidas, copa de vino, pétalos de rosa y esposas ([assets/bg-table.jpg](file:///c:/entre-nosotros/assets/bg-table.jpg)).
+  - Abanico de 3 cartas con borde luminoso dorado/rosa, reverso de celosía de corazones en SVG y silueta ilustrada a contraluz ([assets/card-couple.jpg](file:///c:/entre-nosotros/assets/card-couple.jpg)).
+  - Iconografía 100% vectorial en SVG (sin emojis del sistema), paneles de cristal ahumado (`backdrop-filter: blur`) y tipografía `Playfair Display`.
+- **5 Categorías Directas:**
+  1. **Calentamiento** (*Rompe el hielo*)
+  2. **Seducción** (*Provoca y disfruta*)
+  3. **Intimidad** (*Conecta más profundo*)
+  4. **Retos Atrevidos** (*¿Se atreven?*)
+  5. **Sin Límites 18+** (*Solo para parejas sin tabúes*)
+- **Jugabilidad Táctil y Minimalista:**
+  - Retos de **1 sola frase directa** para leer en un segundo.
+  - Desliza la carta a la derecha (**Cumplido**) o a la izquierda (**Pasar**), o usa los botones inferiores.
+  - Incluye **Dados de Seducción** (Acción + Zona) y **Ruleta de Castigo** integrados en el panel derecho.

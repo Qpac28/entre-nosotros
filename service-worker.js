@@ -1,13 +1,11 @@
-const CACHE_NAME = "entre-nosotros-v5";
+const CACHE_NAME = "entre-nosotros-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./style.css",
   "./script.js",
-  "./three-icon.js",
-  "./three-confetti.js",
-  "./three-embers.js",
-  "./three.min.js",
+  "./assets/bg-table.jpg",
+  "./assets/card-couple.jpg",
   "./playfair-display-700.woff2",
   "./manifest.json",
   "./icon-192.png",
