@@ -12,8 +12,49 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Entre Nosotros" />
+  <style>
+    /* Critical CSS so the loader paints instantly, before style.css finishes loading */
+    #appLoader {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, #240c1d 0%, #09050b 80%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 1000;
+      transition: opacity 0.5s ease;
+    }
+    #appLoader.loader-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .app-loader-heart {
+      font-size: 2.8rem;
+      animation: appLoaderPulse 1.6s infinite;
+    }
+    .app-loader-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #e63956, #f4c430);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #e63956;
+    }
+    @keyframes appLoaderPulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
+
+  <div id="appLoader">
+    <div class="app-loader-heart">🔥</div>
+    <div class="app-loader-title">ENTRE NOSOTROS</div>
+  </div>
 
   <!-- Shared gradient defs for glossy 3D-style card icons -->
   <svg width="0" height="0" style="position: absolute;">
@@ -106,6 +147,14 @@
         <select id="setupExtreme">
           <option value="no" id="optExtremeNo" selected>No, stay at Power & Fantasy max</option>
           <option value="yes" id="optExtremeYes">Yes, include extreme dares</option>
+        </select>
+      </div>
+
+      <div class="setup-group">
+        <label id="labelRemote">Solo / Long-Distance Mode:</label>
+        <select id="setupRemote">
+          <option value="no" id="optRemoteNo" selected>No, we're in the same room</option>
+          <option value="yes" id="optRemoteYes">Yes, texting/calling-friendly dares only</option>
         </select>
       </div>
 

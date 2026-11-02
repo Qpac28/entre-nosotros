@@ -3,6 +3,7 @@ let heatPoints = 0;
 let passLimit = 3;
 let includeDrinks = true;
 let includeExtreme = false;
+let remoteMode = false;
 let passesLeft = { 1: 3, 2: 3 };
 let playerCount = 2;
 let currentTurn = 1;
@@ -211,6 +212,9 @@ const uiText = {
     labelExtreme: "Include Extreme Dares (18+, opt-in):",
     optExtremeYes: "Yes, include extreme dares",
     optExtremeNo: "No, stay at Power & Fantasy max",
+    labelRemote: "Solo / Long-Distance Mode:",
+    optRemoteNo: "No, we're in the same room",
+    optRemoteYes: "Yes, texting/calling-friendly dares only",
     turnPrefix: "Current Turn: ",
     frontTitle: "Tap to Draw",
     frontSub: "Remember: Green, Yellow, or Pass anytime.",
@@ -309,6 +313,7 @@ const uiText = {
       <p class="htp-line"><strong>📅 Card of the Day:</strong> the first card each session is the same for everyone on that date.</p>
       <p class="htp-line"><strong>📊 Recap:</strong> check your heat level, cards completed, passes used, badges, and lifetime stats at any point.</p>
       <p class="htp-line"><strong>✍️ Custom Cards & Packs:</strong> add your own prompts in setup, import a .json expansion pack, or manage/export/delete what you've added.</p>
+      <p class="htp-line"><strong>📱 Solo / Long-Distance Mode:</strong> swaps the deck to Truths plus a handful of texting/calling-friendly Dares, for when you're not in the same room.</p>
     `
   },
   es: {
@@ -322,6 +327,9 @@ const uiText = {
     labelExtreme: "Incluir Retos Extremos (18+, opcional):",
     optExtremeYes: "Sí, incluir retos extremos",
     optExtremeNo: "No, quedarse en Poder y Fantasía",
+    labelRemote: "Modo Solo / Distancia:",
+    optRemoteNo: "No, estamos en el mismo lugar",
+    optRemoteYes: "Sí, solo retos para texto/llamada",
     turnPrefix: "Turno Actual: ",
     frontTitle: "Toca para Sacar",
     frontSub: "Recuerda: Verde, Amarillo o Pasar cuando quieras.",
@@ -420,6 +428,7 @@ const uiText = {
       <p class="htp-line"><strong>📅 Carta del Día:</strong> la primera carta de cada sesión es la misma para todos en esa fecha.</p>
       <p class="htp-line"><strong>📊 Resumen:</strong> revisa tu nivel de calor, cartas completadas, pases usados, insignias y estadísticas históricas en cualquier momento.</p>
       <p class="htp-line"><strong>✍️ Cartas Personalizadas y Paquetes:</strong> añade tus propios retos en la configuración, importa un paquete de expansión .json, o administra/exporta/elimina lo que ya añadiste.</p>
+      <p class="htp-line"><strong>📱 Modo Solo / Distancia:</strong> cambia el mazo a Verdades más algunos Retos pensados para texto o llamada, para cuando no están en el mismo lugar.</p>
     `
   }
 };
@@ -1101,6 +1110,80 @@ const defaultDeck = [
     text: { en: "Pitch your partner your most romantic (or funniest) idea for how tonight should end.", es: "Preséntale a tu pareja tu idea más romántica (o más graciosa) de cómo debería terminar la noche." },
     twist: { en: "They get veto power — but have to suggest an alternative.", es: "Ellos pueden vetarla —pero deben proponer una alternativa." },
     svg: ICONS.t2Truth
+  },
+
+  // --- Solo / Long-Distance Mode Dares (remoteOk: true) — texting/calling-friendly ---
+  {
+    tier: 1, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Send your partner a voice message telling them one thing you miss about being close to them.", es: "Envíale a tu pareja un mensaje de voz diciéndole algo que extrañas de estar cerca de ella." },
+    twist: { en: "Make your voice as soft and slow as you can.", es: "Haz tu voz lo más suave y lenta posible." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Text your partner a flirty message using only emojis — they have to guess what it means.", es: "Envíale a tu pareja un mensaje coqueto usando solo emojis —debe adivinar qué significa." },
+    twist: { en: "If they guess wrong, send a hint using just one word.", es: "Si falla, envía una pista con una sola palabra." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 2, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Call your partner and describe, in your most seductive voice, what you're wearing right now.", es: "Llama a tu pareja y describe, con tu voz más seductora, lo que llevas puesto ahora mismo." },
+    twist: { en: "Describe it twice as slow the second time.", es: "Descríbelo el doble de lento la segunda vez." },
+    svg: ICONS.t2Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Send your partner a selfie making the exact face you make right before you kiss them.", es: "Envíale a tu pareja una selfie haciendo la cara exacta que haces justo antes de besarla." },
+    twist: { en: "Caption it with one word.", es: "Ponle un pie de foto de una sola palabra." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 30, remoteOk: true,
+    text: { en: "Video call your partner and hold eye contact through the screen for 30 seconds without talking.", es: "Haz videollamada a tu pareja y mantengan contacto visual a través de la pantalla 30 segundos sin hablar." },
+    twist: { en: "Whoever looks away or laughs first owes the other a voice memo confession.", es: "Quien aparte la mirada o se ría primero le debe al otro una confesión en mensaje de voz." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 2, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Record a 10-second voice memo of you saying your partner's name the way you'd say it in the heat of the moment.", es: "Graba un mensaje de voz de 10 segundos diciendo el nombre de tu pareja como lo dirías en el momento más intenso." },
+    twist: { en: "Send it without any explanation.", es: "Envíalo sin ninguna explicación." },
+    svg: ICONS.t2Dare
+  },
+  {
+    tier: 2, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Text your partner the first line of a story about the two of you — stop right before it gets interesting.", es: "Envíale a tu pareja la primera línea de una historia sobre ustedes dos —detente justo antes de ponerse interesante." },
+    twist: { en: "They have to text back begging for the next line.", es: "Debe responder rogando por la siguiente línea." },
+    svg: ICONS.t2Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Call your partner and hum or sing a few seconds of the song that reminds you most of them.", es: "Llama a tu pareja y tararea o canta unos segundos de la canción que más te recuerda a ella." },
+    twist: { en: "Tell them why right after.", es: "Dile por qué justo después." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Send your partner a photo of something in your surroundings right now that reminds you of a moment together.", es: "Envíale a tu pareja una foto de algo en tu entorno ahora mismo que te recuerde un momento juntos." },
+    twist: { en: "Make them guess the memory before you explain it.", es: "Haz que adivinen el recuerdo antes de explicarlo." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 3, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Video call your partner and whisper something you wish you could do together tonight.", es: "Haz videollamada a tu pareja y susurra algo que desearías poder hacer juntos esta noche." },
+    twist: { en: "Make them promise it's the first thing you do next time you're together.", es: "Haz que prometa que será lo primero que hagan la próxima vez que estén juntos." },
+    svg: ICONS.t3Dare
+  },
+  {
+    tier: 1, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Send your partner a \"good morning\" or \"good night\" text that's a little bolder than your usual one.", es: "Envíale a tu pareja un mensaje de 'buenos días' o 'buenas noches' un poco más atrevido de lo usual." },
+    twist: { en: "No emojis allowed — words only.", es: "No se permiten emojis —solo palabras." },
+    svg: ICONS.t1Dare
+  },
+  {
+    tier: 2, type: "Dare", time: 0, remoteOk: true,
+    text: { en: "Describe over a call exactly how you'd greet your partner if you walked in the door right now.", es: "Describe por llamada exactamente cómo saludarías a tu pareja si entraras por la puerta ahora mismo." },
+    twist: { en: "Act out the first 3 seconds with your voice alone.", es: "Actúa los primeros 3 segundos solo con tu voz." },
+    svg: ICONS.t2Dare
   }
 ];
 
@@ -1241,6 +1324,7 @@ function startGameSession() {
   includeDrinks = document.getElementById("setupDrinkDares").value === "yes";
   includeExtreme = document.getElementById("setupExtreme").value === "yes";
   document.getElementById("tier4Btn").style.display = includeExtreme ? "inline-block" : "none";
+  remoteMode = document.getElementById("setupRemote").value === "yes";
   AudioFX.setMuted(document.getElementById("setupSound").value === "off");
   updateMuteButton();
 
@@ -1294,6 +1378,7 @@ function getCardOfTheDay() {
   let pool = includeDrinks ? defaultDeck : defaultDeck.filter((c) => c.type !== "Drink");
   if (!includeExtreme) pool = pool.filter((c) => c.tier !== 4);
   pool = pool.filter((c) => heatPoints >= (TIER_UNLOCK_HEAT[c.tier] || 0));
+  if (remoteMode) pool = pool.filter((c) => c.type === "Truth" || c.remoteOk === true);
   const dateStr = new Date().toISOString().slice(0, 10);
   let hash = 0;
   for (let i = 0; i < dateStr.length; i++) {
@@ -1332,6 +1417,11 @@ function getActiveDeck() {
     combined = combined.filter(c => c.tier !== 4);
   }
   combined = combined.filter(c => heatPoints >= (TIER_UNLOCK_HEAT[c.tier] || 0));
+  if (remoteMode) {
+    // Only Truths and cards explicitly written for texting/calling (remoteOk) —
+    // everything else assumes you're in the same room.
+    combined = combined.filter(c => c.type === "Truth" || c.remoteOk === true);
+  }
   if (activeTier === "all") return combined;
   return combined.filter(c => c.tier === activeTier);
 }
@@ -1394,6 +1484,9 @@ function updateUIText() {
   document.getElementById("labelExtreme").textContent = t.labelExtreme;
   document.getElementById("optExtremeYes").textContent = t.optExtremeYes;
   document.getElementById("optExtremeNo").textContent = t.optExtremeNo;
+  document.getElementById("labelRemote").textContent = t.labelRemote;
+  document.getElementById("optRemoteNo").textContent = t.optRemoteNo;
+  document.getElementById("optRemoteYes").textContent = t.optRemoteYes;
   document.getElementById("labelSound").textContent = t.labelSound;
   document.getElementById("optSoundOn").textContent = t.optSoundOn;
   document.getElementById("optSoundOff").textContent = t.optSoundOff;
@@ -1520,7 +1613,9 @@ function forceNextCard(type) {
   let pool = getActiveDeck().filter(c => c.type === type);
   if (pool.length === 0) {
     pool = [...defaultDeck, ...customDeck, ...importedDeck].filter(c =>
-      c.type === type && (includeExtreme || c.tier !== 4)
+      c.type === type &&
+      (includeExtreme || c.tier !== 4) &&
+      (!remoteMode || c.type === "Truth" || c.remoteOk === true)
     );
   }
   const card = pool[Math.floor(Math.random() * pool.length)];
@@ -1907,4 +2002,13 @@ if (!icon3DReady) {
 // Service workers require http(s) — this is a no-op when the file is opened directly (file://)
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   navigator.serviceWorker.register("service-worker.js").catch(() => {});
+}
+
+// Hide the branded loading screen now that the app (including the 3D icon) is ready
+const appLoader = document.getElementById("appLoader");
+if (appLoader) {
+  setTimeout(() => {
+    appLoader.classList.add("loader-hidden");
+    setTimeout(() => appLoader.remove(), 600);
+  }, 300);
 }
