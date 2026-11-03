@@ -1,7 +1,8 @@
-78098b89c88a74ebe8c20117b8754620
-::res://::1793655746
-icon-192.png::CompressedTexture2D::750698767396241723::1793653334::1793655659::1::::<><><>0<>0<>efab2f2834060aa48dfc7878854ae94f<>res://.godot/imported/icon-192.png-0bbe9adb712cbff3ad2c833eb8851e00.ctex::
-icon-512.png::CompressedTexture2D::9111958023283414157::1793653334::1793655659::1::::<><><>0<>0<>316d929c394065711288d20294cd38d1<>res://.godot/imported/icon-512.png-ed22e6b0d5449b40931b2ea67b240398.ctex::
+9cad1ddce9e5a63143ba340c9520626b
+::res://::1793737394
+export_presets.cfg::TextFile::-1::1793735848::0::1::::<><><>0<>0<><>::
+icon-192.png::CompressedTexture2D::750698767396241723::1793735534::1793735862::1::::<><><>0<>0<>efab2f2834060aa48dfc7878854ae94f<>res://.godot/imported/icon-192.png-0bbe9adb712cbff3ad2c833eb8851e00.ctex::
+icon-512.png::CompressedTexture2D::9111958023283414157::1793735534::1793735862::1::::<><><>0<>0<>316d929c394065711288d20294cd38d1<>res://.godot/imported/icon-512.png-ed22e6b0d5449b40931b2ea67b240398.ctex::
 icon.svg::CompressedTexture2D::7596739777726294612::1793655432::1793655659::1::::<><><>0<>0<>2ed64bd7801d26eeef1d1f4c564e5035<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 manifest.json::JSON::-1::1793653334::0::1::::<><><>0<>0<><>::
 playfair-display-700.woff2::FontFile::1535645026009168470::1793653334::1793655659::1::::<><><>0<>0<>10e41ae23e8f5b499372af9c0542db0c<>res://.godot/imported/playfair-display-700.woff2-77c38418019d02416ea74d2fc83a130a.fontdata::
@@ -17,7 +18,7 @@ card-sinlimites.jpg::CompressedTexture2D::1833031329744860639::1793655958::17936
 ::res://scenes/::1793655633
 main_game.tscn::PackedScene::5806712248316430877::1793655633::0::1::::<><><>0<>0<><>::res://scripts/main_game.gd
 ::res://scripts/::1793655659
-deck_data.gd::GDScript::6500031988467570177::1793656016::0::1::::<>RefCounted<><>0<>0<><>::
-main_game.gd::GDScript::4485981629178485161::1793656223::0::1::::<>Control<><>0<>0<><>::
-sound_fx.gd::GDScript::4519791114706650071::1793655965::0::1::::<>Node<><>0<>0<><>::
-svg_icons.gd::GDScript::906394906497585326::1793655937::0::1::::<>RefCounted<><>0<>0<><>::
+deck_data.gd::GDScript::6500031988467570177::1793735204::0::1::::DeckData<>RefCounted<><>0<>0<><>::
+main_game.gd::GDScript::4485981629178485161::1793735846::0::1::::<>Control<><>0<>0<><>::
+sound_fx.gd::GDScript::4519791114706650071::1793735233::0::1::::<>Node<><>0<>0<><>::
+svg_icons.gd::GDScript::906394906497585326::1793732559::0::1::::<>RefCounted<><>0<>0<><>::

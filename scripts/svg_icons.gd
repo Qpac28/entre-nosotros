@@ -159,6 +159,166 @@ const CAT_5_LOCK := """<svg xmlns="http://www.w3.org/2000/svg" width="44" height
   <path d="M24 32 V36" stroke="#2b030d" stroke-width="2.5" stroke-linecap="round"/>
 </svg>"""
 
+const EMBER_DOT_SVG := """<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <radialGradient id="eg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff4e0" stop-opacity="1.0"/>
+      <stop offset="45%" stop-color="#ff8a5b" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ff2a55" stop-opacity="0.0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="12" cy="12" r="12" fill="url(#eg)"/>
+</svg>"""
+
+const ICON_CHECK := """<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>"""
+
+const ICON_CROSS := """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff9ebb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>"""
+
+const BTN_JEWEL_PRIMARY := """<svg xmlns="http://www.w3.org/2000/svg" width="260" height="62" viewBox="0 0 260 62">
+  <defs>
+    <linearGradient id="jg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff6b8b"/>
+      <stop offset="35%" stop-color="#e81748"/>
+      <stop offset="100%" stop-color="#7a0623"/>
+    </linearGradient>
+    <linearGradient id="jrim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe4d6"/>
+      <stop offset="50%" stop-color="#ff8da6"/>
+      <stop offset="100%" stop-color="#ffd0b8"/>
+    </linearGradient>
+    <linearGradient id="jshine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="256" height="58" rx="29" fill="url(#jg)" stroke="url(#jrim)" stroke-width="2.4"/>
+  <rect x="14" y="5" width="232" height="22" rx="11" fill="url(#jshine)"/>
+</svg>"""
+
+const BTN_JEWEL_HOVER := """<svg xmlns="http://www.w3.org/2000/svg" width="260" height="62" viewBox="0 0 260 62">
+  <defs>
+    <linearGradient id="jgh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff85a0"/>
+      <stop offset="40%" stop-color="#ff2457"/>
+      <stop offset="100%" stop-color="#9e0b30"/>
+    </linearGradient>
+    <linearGradient id="jshine2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="256" height="58" rx="29" fill="url(#jgh)" stroke="#fff0e6" stroke-width="2.6"/>
+  <rect x="14" y="5" width="232" height="24" rx="12" fill="url(#jshine2)"/>
+</svg>"""
+
+const CARD_GOLD_DIVIDER_SVG := """<svg xmlns="http://www.w3.org/2000/svg" width="340" height="26" viewBox="0 0 340 26" fill="none">
+  <defs>
+    <linearGradient id="dg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffd8c2" stop-opacity="0.0"/>
+      <stop offset="35%" stop-color="#ffd8c2" stop-opacity="0.75"/>
+      <stop offset="50%" stop-color="#fff4e6" stop-opacity="1.0"/>
+      <stop offset="65%" stop-color="#ffd8c2" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffd8c2" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+  <line x1="8" y1="13" x2="148" y2="13" stroke="url(#dg)" stroke-width="1.5"/>
+  <line x1="192" y1="13" x2="332" y2="13" stroke="url(#dg)" stroke-width="1.5"/>
+  <polygon points="154,13 158,9 162,13 158,17" fill="#ffd8c2" fill-opacity="0.75"/>
+  <polygon points="178,13 182,9 186,13 182,17" fill="#ffd8c2" fill-opacity="0.75"/>
+  <path d="M170 21 C170 21 161 15 161 9.5 C161 6.8 163.2 5 165.8 5 C167.6 5 169 6 170 7.5 C171 6 172.4 5 174.2 5 C176.8 5 179 6.8 179 9.5 C179 15 170 21 170 21 Z" fill="#ff2a55" stroke="#ffe4d6" stroke-width="1.4"/>
+</svg>"""
+
+const DIE_CRIMSON_BG := """<svg xmlns="http://www.w3.org/2000/svg" width="154" height="154" viewBox="0 0 154 154">
+  <defs>
+    <linearGradient id="dcg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9e0b32"/>
+      <stop offset="50%" stop-color="#520418"/>
+      <stop offset="100%" stop-color="#24010a"/>
+    </linearGradient>
+    <linearGradient id="dsh" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="146" height="146" rx="28" fill="url(#dcg)" stroke="#ffd8b8" stroke-width="3.2"/>
+  <rect x="12" y="12" width="130" height="130" rx="21" fill="none" stroke="#ff8da6" stroke-opacity="0.38" stroke-width="1.2"/>
+  <rect x="16" y="10" width="122" height="44" rx="18" fill="url(#dsh)"/>
+  <circle cx="24" cy="24" r="3.8" fill="#ffd8b8"/>
+  <circle cx="130" cy="24" r="3.8" fill="#ffd8b8"/>
+  <circle cx="24" cy="130" r="3.8" fill="#ffd8b8"/>
+  <circle cx="130" cy="130" r="3.8" fill="#ffd8b8"/>
+</svg>"""
+
+const DIE_OBSIDIAN_BG := """<svg xmlns="http://www.w3.org/2000/svg" width="154" height="154" viewBox="0 0 154 154">
+  <defs>
+    <linearGradient id="dog" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#380818"/>
+      <stop offset="50%" stop-color="#1a030b"/>
+      <stop offset="100%" stop-color="#0a0104"/>
+    </linearGradient>
+    <linearGradient id="dsh2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="146" height="146" rx="28" fill="url(#dog)" stroke="#f5c690" stroke-width="3.2"/>
+  <rect x="12" y="12" width="130" height="130" rx="21" fill="none" stroke="#ffd8b8" stroke-opacity="0.30" stroke-width="1.2"/>
+  <rect x="16" y="10" width="122" height="44" rx="18" fill="url(#dsh2)"/>
+  <circle cx="24" cy="24" r="3.8" fill="#f5c690"/>
+  <circle cx="130" cy="24" r="3.8" fill="#f5c690"/>
+  <circle cx="24" cy="130" r="3.8" fill="#f5c690"/>
+  <circle cx="130" cy="130" r="3.8" fill="#f5c690"/>
+</svg>"""
+
+const DIE_ACT_BITE := """<svg xmlns="http://www.w3.org/2000/svg" width="48" height="44" viewBox="0 0 48 44" fill="none">
+  <path d="M6 18 C14 8 34 8 42 18 C34 32 14 32 6 18 Z" fill="#ff2e5b" stroke="#ffd8c2" stroke-width="2"/>
+  <polygon points="16,15 19,23 22,15" fill="#fff5f7"/>
+  <polygon points="26,15 29,23 32,15" fill="#fff5f7"/>
+</svg>"""
+
+const DIE_ACT_WHISPER := """<svg xmlns="http://www.w3.org/2000/svg" width="48" height="44" viewBox="0 0 48 44" fill="none" stroke="#ffd8c2" stroke-width="2.4" stroke-linecap="round">
+  <path d="M10 22 C14 16 14 28 10 22"/>
+  <path d="M20 15 C26 19 26 25 20 29"/>
+  <path d="M28 10 C37 16 37 28 28 34" stroke="#ff5e7e"/>
+  <path d="M36 6 C46 14 46 30 36 38" stroke="#ff2e5b"/>
+</svg>"""
+
+const DIE_ACT_FEATHER := """<svg xmlns="http://www.w3.org/2000/svg" width="48" height="44" viewBox="0 0 48 44" fill="none">
+  <path d="M38 6 C24 6 12 18 10 34 C24 32 38 20 38 6 Z" fill="#ff476e" fill-opacity="0.35" stroke="#ffd8c2" stroke-width="2.2"/>
+  <path d="M8 38 L34 12" stroke="#fff0dc" stroke-width="2.2" stroke-linecap="round"/>
+</svg>"""
+
+const DIE_ZONE_NECK := """<svg xmlns="http://www.w3.org/2000/svg" width="48" height="44" viewBox="0 0 48 44" fill="none" stroke="#ffd8c2" stroke-width="2.3" stroke-linecap="round">
+  <path d="M16 8 C18 18 16 28 10 36"/>
+  <path d="M32 8 C30 18 32 28 38 36"/>
+  <circle cx="24" cy="22" r="4" fill="#ff2e5b" stroke="none"/>
+</svg>"""
+
+const DIE_ZONE_EAR := """<svg xmlns="http://www.w3.org/2000/svg" width="48" height="44" viewBox="0 0 48 44" fill="none" stroke="#ffd8c2" stroke-width="2.3" stroke-linecap="round">
+  <path d="M18 12 C18 6 32 6 32 18 C32 28 24 30 22 36 C18 38 14 34 16 28"/>
+  <path d="M22 16 C26 16 26 24 22 24" stroke="#ff5e7e"/>
+</svg>"""
+
+static func get_dice_action_svg(idx: int) -> String:
+	match idx % 6:
+		0: return CAT_2_LIPS
+		1: return DIE_ACT_BITE
+		2: return DIE_ACT_WHISPER
+		3: return DIE_ACT_FEATHER
+		4: return CAT_1_FLAME
+		5: return DIE_ACT_WHISPER
+	return CAT_2_LIPS
+
+static func get_dice_zone_svg(idx: int) -> String:
+	match idx % 6:
+		0: return DIE_ZONE_NECK
+		1: return CAT_2_LIPS
+		2: return DIE_ZONE_EAR
+		3: return CAT_3_HEARTS
+		4: return DIE_ACT_FEATHER
+		5: return CAT_1_FLAME
+	return DIE_ZONE_NECK
+
 static func get_category_svg(cat_idx: int) -> String:
 	match cat_idx:
 		1: return CAT_1_FLAME

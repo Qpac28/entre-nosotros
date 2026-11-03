@@ -1,208 +1,391 @@
+class_name DeckData
 extends RefCounted
 
-const TEXTS := {
-	"es": {
-		"brand_tagline": "EL JUEGO QUE ENCIENDE LA CONEXIÓN",
-		"hero_title": "¿Listos para jugar?",
-		"hero_sub": "Retos, seducción y mucha complicidad...",
-		"nav_home": "Inicio",
-		"nav_play": "Jugar",
-		"nav_cats": "Categorías",
-		"nav_couple": "Pareja",
-		"nav_settings": "Idioma",
-		"main_play": "Jugar ahora",
-		"howto_title": "Cómo jugar",
-		"step_1": "Elijan una categoría.",
-		"step_2": "Roben una carta por turno.",
-		"step_3": "Cumplan el reto... ¡y disfruten!",
-		"btn_dice": "Dados de Seducción",
-		"btn_wheel": "Ruleta de Castigo",
-		"choose_cat": "Elige una categoría",
-		"cats": {
-			1: {"title": "Calentamiento", "sub": "Rompe el hielo"},
-			2: {"title": "Seducción", "sub": "Provoca y disfruta"},
-			3: {"title": "Intimidad", "sub": "Conecta más profundo"},
-			4: {"title": "Retos Atrevidos", "sub": "¿Se atreven?"},
-			5: {"title": "Sin Límites", "sub": "Solo para parejas sin tabúes"}
-		},
-		"types": {
-			"Truth": "VERDAD",
-			"Dare": "RETO",
-			"Drink": "BRINDIS",
-			"Dice": "DADOS",
-			"Secret": "¿COINCIDEN?"
-		},
-		"turn_of": "Turno de ",
-		"heat_label": "COMPLICIDAD",
-		"passes_left": " Pases",
-		"twist_btn": "+ Subir el tono",
-		"pass_btn": "Cambiar carta",
-		"done_btn": "¡Reto cumplido!",
-		"stamp_done": "CUMPLIDO",
-		"stamp_pass": "PASAR",
-		"secret_p1_hint": "Elige en secreto: ",
-		"secret_p2_hint": "Ahora elige: ",
-		"secret_match": "¡COINCIDIERON! (+2 Complicidad) · Celébrenlo con un beso de 15s",
-		"secret_diff": "¡Distinto! Quien eligió último cumple la opción del otro ahora",
-		"dice_title": "Dados de Seducción",
-		"dice_sub": "Lanza los dados y cumplan la combinación",
-		"wheel_title": "Ruleta de Castigo",
-		"wheel_sub": "Gira la ruleta para descubrir tu penitencia",
-		"roll_again": "Lanzar de nuevo",
-		"spin_again": "Girar ruleta",
-		"back_table": "Volver a la mesa",
-		"climax_title": "Los 3 Sobres Dorados",
-		"climax_sub": "¡Complicidad al máximo! Elijan juntos un sobre sellado para cerrar la noche",
-		"p1_default": "Jugador 1",
-		"p2_default": "Jugador 2",
-		"couple_title": "Nuestra Pareja",
-		"couple_sub": "Personalicen sus nombres para los turnos",
-		"save_couple": "Guardar y jugar"
+const CATEGORIES := {
+	1: {
+		"title_es": "Calentamiento",
+		"title_en": "Warm-Up",
+		"badge_es": "NIVEL I · CALENTAMIENTO",
+		"badge_en": "LEVEL I · WARM-UP",
+		"color": Color(0.95, 0.22, 0.40)
 	},
-	"en": {
-		"brand_tagline": "THE GAME THAT IGNITES CONNECTION",
-		"hero_title": "Ready to play?",
-		"hero_sub": "Dares, seduction, and deep complicity...",
-		"nav_home": "Home",
-		"nav_play": "Play",
-		"nav_cats": "Categories",
-		"nav_couple": "Couple",
-		"nav_settings": "Language",
-		"main_play": "Play now",
-		"howto_title": "How to play",
-		"step_1": "Choose a category.",
-		"step_2": "Draw one card per turn.",
-		"step_3": "Complete the dare... and enjoy!",
-		"btn_dice": "Seduction Dice",
-		"btn_wheel": "Penalty Wheel",
-		"choose_cat": "Choose a category",
-		"cats": {
-			1: {"title": "Warm-Up", "sub": "Break the ice"},
-			2: {"title": "Seduction", "sub": "Tease and enjoy"},
-			3: {"title": "Intimacy", "sub": "Connect deeper"},
-			4: {"title": "Bold Dares", "sub": "Do you dare?"},
-			5: {"title": "No Limits", "sub": "For couples without taboos"}
-		},
-		"types": {
-			"Truth": "TRUTH",
-			"Dare": "DARE",
-			"Drink": "TOAST",
-			"Dice": "DICE",
-			"Secret": "DO YOU MATCH?"
-		},
-		"turn_of": "Turn: ",
-		"heat_label": "CONNECTION",
-		"passes_left": " Passes",
-		"twist_btn": "+ Raise the heat",
-		"pass_btn": "Skip card",
-		"done_btn": "Completed!",
-		"stamp_done": "DONE",
-		"stamp_pass": "SKIP",
-		"secret_p1_hint": "Pick secretly: ",
-		"secret_p2_hint": "Now pick: ",
-		"secret_match": "IT'S A MATCH! (+2 Connection) · Celebrate with a 15s kiss",
-		"secret_diff": "Different! The second player must grant the first player's choice",
-		"dice_title": "Seduction Dice",
-		"dice_sub": "Roll the dice and perform the combination",
-		"wheel_title": "Penalty Wheel",
-		"wheel_sub": "Spin the wheel to reveal your forfeit",
-		"roll_again": "Roll again",
-		"spin_again": "Spin wheel",
-		"back_table": "Back to table",
-		"climax_title": "The 3 Golden Envelopes",
-		"climax_sub": "Max Connection reached! Choose one sealed envelope together",
-		"p1_default": "Partner 1",
-		"p2_default": "Partner 2",
-		"couple_title": "Our Couple",
-		"couple_sub": "Customize your names for each turn",
-		"save_couple": "Save & play"
+	2: {
+		"title_es": "Seducción",
+		"title_en": "Seduction",
+		"badge_es": "NIVEL II · SEDUCCIÓN",
+		"badge_en": "LEVEL II · SEDUCTION",
+		"color": Color(0.88, 0.16, 0.35)
+	},
+	3: {
+		"title_es": "Intimidad",
+		"title_en": "Intimacy",
+		"badge_es": "NIVEL III · INTIMIDAD",
+		"badge_en": "LEVEL III · INTIMACY",
+		"color": Color(0.76, 0.14, 0.32)
+	},
+	4: {
+		"title_es": "Retos Atrevidos",
+		"title_en": "Daring Dares",
+		"badge_es": "NIVEL IV · ATREVIDOS",
+		"badge_en": "LEVEL IV · DARING",
+		"color": Color(0.92, 0.32, 0.22)
+	},
+	5: {
+		"title_es": "Sin Límites 18+",
+		"title_en": "No Limits 18+",
+		"badge_es": "NIVEL V · SIN LÍMITES 18+",
+		"badge_en": "LEVEL V · NO LIMITS 18+",
+		"color": Color(0.98, 0.12, 0.30)
 	}
 }
 
-const CLIMAX_ENVELOPES := [
+const CARDS := [
+	# ================= 1: CALENTAMIENTO (10 CARTAS) =================
 	{
-		"label_es": "Sobre I · Fantasía",
-		"label_en": "Envelope I · Fantasy",
-		"es": "Apaguen todas las luces por 3 minutos. Uno guía al otro solo con susurros y caricias, sin límites.",
-		"en": "Turn off all lights for 3 minutes. One guides the other using only whispers and touch."
+		"cat": 1, "type": "Action", "timer": 15,
+		"es": "[color=#ff5e84]Mírense a los ojos[/color] en silencio por [color=#ffd8a8]15 segundos[/color].",
+		"en": "[color=#ff5e84]Hold eye contact[/color] in silence for [color=#ffd8a8]15 seconds[/color]."
 	},
 	{
-		"label_es": "Sobre II · Dominio",
-		"label_en": "Envelope II · Command",
-		"es": "Quien tenga más pases restantes tiene el mando absoluto durante los próximos 5 minutos.",
-		"en": "Whoever has the most passes left takes complete command for the next 5 minutes."
+		"cat": 1, "type": "Question", "timer": 0,
+		"es": "¿Qué parte del [color=#ffd8a8]cuerpo de {target}[/color] te [color=#ff5e84]provoca más[/color] hoy?",
+		"en": "Which part of [color=#ffd8a8]{target}'s body[/color] [color=#ff5e84]tempts you most[/color] today?"
 	},
 	{
-		"label_es": "Sobre III · Entrega",
-		"label_en": "Envelope III · Surrender",
-		"es": "Cierren el juego ahora mismo y cumplan juntos el deseo que ambos llevan pensando toda la partida.",
-		"en": "Close the game right now and fulfill the desire you've both been thinking about all night."
+		"cat": 1, "type": "Action", "timer": 20,
+		"es": "[color=#ff5e84]Acaricia[/color] el rostro y [color=#ffd8a8]labios de {target}[/color] por [color=#ffd8a8]20s[/color].",
+		"en": "[color=#ff5e84]Caress[/color] [color=#ffd8a8]{target}'s face and lips[/color] for [color=#ffd8a8]20s[/color]."
+	},
+	{
+		"cat": 1, "type": "Action", "timer": 0,
+		"es": "Dale [color=#ff5e84]3 besos lentos[/color] a [color=#ffd8a8]{target}[/color] sin tocar sus labios.",
+		"en": "Give [color=#ffd8a8]{target}[/color] [color=#ff5e84]3 slow kisses[/color] without touching lips."
+	},
+	{
+		"cat": 1, "type": "Action", "timer": 15,
+		"es": "[color=#ff5e84]Entrelaza tus manos[/color] con [color=#ffd8a8]{target}[/color] y bésale la frente [color=#ffd8a8]15s[/color].",
+		"en": "[color=#ff5e84]Lock hands[/color] with [color=#ffd8a8]{target}[/color] and kiss their forehead [color=#ffd8a8]15s[/color]."
+	},
+	{
+		"cat": 1, "type": "Question", "timer": 0,
+		"es": "Di al oído de [color=#ffd8a8]{target}[/color] qué fue lo que más te [color=#ff5e84]gustó de hoy[/color].",
+		"en": "Tell [color=#ffd8a8]{target}[/color] what [color=#ff5e84]turned you on[/color] most about them today."
+	},
+	{
+		"cat": 1, "type": "Action", "timer": 20,
+		"es": "[color=#ff5e84]Besa suavemente[/color] las [color=#ffd8a8]manos y muñecas de {target}[/color] por [color=#ffd8a8]20s[/color].",
+		"en": "[color=#ff5e84]Softly kiss[/color] [color=#ffd8a8]{target}'s hands and wrists[/color] for [color=#ffd8a8]20s[/color]."
+	},
+	{
+		"cat": 1, "type": "Action", "timer": 20,
+		"es": "[color=#ff5e84]Abraza por la cintura[/color] a [color=#ffd8a8]{target}[/color] bien pegados por [color=#ffd8a8]20s[/color].",
+		"en": "[color=#ff5e84]Pull[/color] [color=#ffd8a8]{target}[/color] close by the waist for [color=#ffd8a8]20s[/color]."
+	},
+	{
+		"cat": 1, "type": "Secret", "timer": 0,
+		"es": "¿Qué [color=#ff5e84]prefieren[/color] ahora mismo?",
+		"en": "What do you both [color=#ff5e84]crave[/color] right now?",
+		"opt_a_es": "Beso lento", "opt_b_es": "Masaje en cuello",
+		"opt_a_en": "Slow kiss", "opt_b_en": "Neck massage",
+		"forfeit_es": "[color=#ff5e84]10s de besos[/color] en el [color=#ffd8a8]cuello de {target}[/color].",
+		"forfeit_en": "[color=#ff5e84]10s of kisses[/color] on [color=#ffd8a8]{target}'s neck[/color]."
+	},
+	{
+		"cat": 1, "type": "Secret", "timer": 0,
+		"es": "¿Cómo prefieren [color=#ff5e84]empezar[/color]?",
+		"en": "How do you prefer to [color=#ff5e84]start[/color]?",
+		"opt_a_es": "Miradas y besos", "opt_b_es": "Caricias lentas",
+		"opt_a_en": "Gaze & kisses", "opt_b_en": "Slow touch",
+		"forfeit_es": "[color=#ff5e84]Acaricia el cuello[/color] de [color=#ffd8a8]{target}[/color] por [color=#ffd8a8]10s[/color].",
+		"forfeit_en": "[color=#ff5e84]Caress[/color] [color=#ffd8a8]{target}'s neck[/color] for [color=#ffd8a8]10s[/color]."
+	},
+
+	# ================= 2: SEDUCCIÓN (10 CARTAS) =================
+	{
+		"cat": 2, "type": "Action", "timer": 20,
+		"es": "[color=#ff5e84]Besa lentamente[/color] el [color=#ffd8a8]cuello de {target}[/color] por [color=#ffd8a8]20s[/color].",
+		"en": "[color=#ff5e84]Slowly kiss[/color] [color=#ffd8a8]{target}'s neck[/color] for [color=#ffd8a8]20s[/color]."
+	},
+	{
+		"cat": 2, "type": "Action", "timer": 0,
+		"es": "[color=#ff5e84]Susurra al oído[/color] de [color=#ffd8a8]{target}[/color] qué quieres hacerle hoy.",
+		"en": "[color=#ff5e84]Whisper in[/color] [color=#ffd8a8]{target}'s ear[/color] what you want tonight."
+	},
+	{
+		"cat": 2, "type": "Action", "timer": 15,
+		"es": "[color=#ff5e84]Muerde suave[/color] el [color=#ffd8a8]labio inferior de {target}[/color] por [color=#ffd8a8]15s[/color].",
+		"en": "[color=#ff5e84]Gently bite[/color] [color=#ffd8a8]{target}'s lower lip[/color] for [color=#ffd8a8]15s[/color]."
+	},
+	{
+		"cat": 2, "type": "Action", "timer": 30,
+		"es": "[color=#ff5e84]Bésense[/color] sin usar las manos durante [color=#ffd8a8]30 segundos[/color].",
+		"en": "[color=#ff5e84]Kiss[/color] without using your hands for [color=#ffd8a8]30 seconds[/color]."
+	},
+	{
+		"cat": 2, "type": "Action", "timer": 20,
+		"es": "[color=#ff5e84]Roza con tus labios[/color] la [color=#ffd8a8]oreja de {target}[/color] durante [color=#ffd8a8]20s[/color].",
+		"en": "[color=#ff5e84]Brush your lips[/color] against [color=#ffd8a8]{target}'s ear[/color] for [color=#ffd8a8]20s[/color]."
+	},
+	{
+		"cat": 2, "type": "Action", "timer": 25,
+		"es": "[color=#ff5e84]Desabrocha o sube[/color] un poco la ropa de [color=#ffd8a8]{target}[/color] y bésale [color=#ffd8a8]25s[/color].",
+		"en": "[color=#ff5e84]Unbutton or lift[/color] [color=#ffd8a8]{target}'s top[/color] and kiss for [color=#ffd8a8]25s[/color]."
+	},
+	{
+		"cat": 2, "type": "Action", "timer": 20,
+		"es": "Pasa las [color=#ff5e84]yemas de tus dedos[/color] por la [color=#ffd8a8]espalda de {target}[/color] [color=#ffd8a8]20s[/color].",
+		"en": "Trace your [color=#ff5e84]fingertips[/color] down [color=#ffd8a8]{target}'s back[/color] for [color=#ffd8a8]20s[/color]."
+	},
+	{
+		"cat": 2, "type": "Question", "timer": 0,
+		"es": "¿Dónde te vuelve loco/a que [color=#ffd8a8]{target}[/color] te [color=#ff5e84]bese despacio[/color]?",
+		"en": "Where does it drive you crazy when [color=#ffd8a8]{target}[/color] [color=#ff5e84]kisses you slowly[/color]?"
+	},
+	{
+		"cat": 2, "type": "Secret", "timer": 0,
+		"es": "¿Dónde quieren el [color=#ff5e84]próximo beso[/color]?",
+		"en": "Where do you want the [color=#ff5e84]next kiss[/color]?",
+		"opt_a_es": "En el cuello", "opt_b_es": "En los labios",
+		"opt_a_en": "On the neck", "opt_b_en": "On the lips",
+		"forfeit_es": "Dale [color=#ff5e84]ambos besos[/color] a [color=#ffd8a8]{target}[/color] ahora.",
+		"forfeit_en": "Give [color=#ffd8a8]{target}[/color] [color=#ff5e84]both kisses[/color] now."
+	},
+	{
+		"cat": 2, "type": "Secret", "timer": 0,
+		"es": "¿Qué [color=#ff5e84]provoca más[/color] ahora?",
+		"en": "What [color=#ff5e84]teases more[/color] right now?",
+		"opt_a_es": "Mordida suave", "opt_b_es": "Susurro caliente",
+		"opt_a_en": "Gentle bite", "opt_b_en": "Hot whisper",
+		"forfeit_es": "Hazle [color=#ff5e84]las dos cosas[/color] a [color=#ffd8a8]{target}[/color].",
+		"forfeit_en": "Do [color=#ff5e84]both[/color] to [color=#ffd8a8]{target}[/color] right now."
+	},
+
+	# ================= 3: INTIMIDAD (10 CARTAS) =================
+	{
+		"cat": 3, "type": "Action", "timer": 30,
+		"es": "[color=#ff5e84]Abrácense piel con piel[/color] en silencio por [color=#ffd8a8]30s[/color].",
+		"en": "[color=#ff5e84]Hold each other close[/color] in silence for [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 3, "type": "Question", "timer": 0,
+		"es": "Confiesa una [color=#ff5e84]fantasía secreta[/color] con [color=#ffd8a8]{target}[/color].",
+		"en": "Confess a [color=#ff5e84]secret fantasy[/color] with [color=#ffd8a8]{target}[/color]."
+	},
+	{
+		"cat": 3, "type": "Action", "timer": 30,
+		"es": "[color=#ff5e84]Besa[/color] desde la muñeca hasta el [color=#ffd8a8]hombro de {target}[/color] [color=#ffd8a8]30s[/color].",
+		"en": "[color=#ff5e84]Kiss[/color] from wrist to [color=#ffd8a8]{target}'s shoulder[/color] [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 3, "type": "Action", "timer": 25,
+		"es": "[color=#ffd8a8]{target}[/color] cierra los ojos: dale [color=#ff5e84]3 besos sorpresa[/color].",
+		"en": "[color=#ffd8a8]{target}[/color] closes eyes: give [color=#ff5e84]3 surprise kisses[/color]."
+	},
+	{
+		"cat": 3, "type": "Action", "timer": 30,
+		"es": "[color=#ff5e84]Besa la clavícula[/color] y el [color=#ffd8a8]pecho de {target}[/color] durante [color=#ffd8a8]30s[/color].",
+		"en": "[color=#ff5e84]Kiss[/color] [color=#ffd8a8]{target}'s collarbone and chest[/color] for [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 3, "type": "Action", "timer": 25,
+		"es": "Pon la mano de [color=#ffd8a8]{target}[/color] donde quieras que te [color=#ff5e84]acaricie[/color] [color=#ffd8a8]25s[/color].",
+		"en": "Place [color=#ffd8a8]{target}'s hand[/color] where you want to be [color=#ff5e84]touched[/color] [color=#ffd8a8]25s[/color]."
+	},
+	{
+		"cat": 3, "type": "Action", "timer": 30,
+		"es": "[color=#ff5e84]Respira y besa[/color] muy lento detrás de la [color=#ffd8a8]oreja de {target}[/color] [color=#ffd8a8]30s[/color].",
+		"en": "[color=#ff5e84]Breathe and kiss[/color] behind [color=#ffd8a8]{target}'s ear[/color] for [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 3, "type": "Question", "timer": 0,
+		"es": "¿Qué te gustaría que [color=#ffd8a8]{target}[/color] te hiciera [color=#ff5e84]sin que lo pidas[/color]?",
+		"en": "What do you wish [color=#ffd8a8]{target}[/color] would do [color=#ff5e84]without you asking[/color]?"
+	},
+	{
+		"cat": 3, "type": "Secret", "timer": 0,
+		"es": "¿[color=#ffd8a8]Luz tenue[/color] o [color=#ff5e84]a oscuras[/color]?",
+		"en": "[color=#ffd8a8]Dim light[/color] or [color=#ff5e84]total darkness[/color]?",
+		"opt_a_es": "Luz tenue", "opt_b_es": "A oscuras",
+		"opt_a_en": "Dim light", "opt_b_en": "Total darkness",
+		"forfeit_es": "[color=#ff5e84]20s de besos[/color] con los [color=#ffd8a8]ojos cerrados[/color].",
+		"forfeit_en": "[color=#ff5e84]20s of kisses[/color] with [color=#ffd8a8]eyes closed[/color]."
+	},
+	{
+		"cat": 3, "type": "Secret", "timer": 0,
+		"es": "¿Qué los [color=#ff5e84]conecta más[/color] en la cama?",
+		"en": "What [color=#ff5e84]connects you more[/color] in bed?",
+		"opt_a_es": "Mirarse a los ojos", "opt_b_es": "Susurros al oído",
+		"opt_a_en": "Eye contact", "opt_b_en": "Whispers in ear",
+		"forfeit_es": "[color=#ff5e84]Bésense mirándose[/color] durante [color=#ffd8a8]15s[/color].",
+		"forfeit_en": "[color=#ff5e84]Kiss while locking eyes[/color] for [color=#ffd8a8]15s[/color]."
+	},
+
+	# ================= 4: RETOS ATREVIDOS (10 CARTAS) =================
+	{
+		"cat": 4, "type": "Action", "timer": 20,
+		"es": "[color=#ff5e84]Quítale una prenda[/color] a [color=#ffd8a8]{target}[/color] muy despacio.",
+		"en": "Slowly [color=#ff5e84]remove one item[/color] from [color=#ffd8a8]{target}[/color]."
+	},
+	{
+		"cat": 4, "type": "Action", "timer": 30,
+		"es": "[color=#ff5e84]Siéntate sobre[/color] [color=#ffd8a8]{target}[/color] y bésale por [color=#ffd8a8]30s[/color].",
+		"en": "[color=#ff5e84]Sit on[/color] [color=#ffd8a8]{target}'s lap[/color] and kiss for [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 4, "type": "Action", "timer": 30,
+		"es": "Recorre con [color=#ff5e84]tus labios[/color] el [color=#ffd8a8]pecho de {target}[/color] por [color=#ffd8a8]30s[/color].",
+		"en": "Trace [color=#ff5e84]your lips[/color] across [color=#ffd8a8]{target}'s chest[/color] for [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 4, "type": "Action", "timer": 45,
+		"es": "[color=#ff5e84]Masajea[/color] los [color=#ffd8a8]muslos y espalda baja de {target}[/color] [color=#ffd8a8]45s[/color].",
+		"en": "[color=#ff5e84]Massage[/color] [color=#ffd8a8]{target}'s thighs and lower back[/color] [color=#ffd8a8]45s[/color]."
+	},
+	{
+		"cat": 4, "type": "Action", "timer": 30,
+		"es": "[color=#ff5e84]Besa la cintura[/color] y el [color=#ffd8a8]abdomen de {target}[/color] por [color=#ffd8a8]30s[/color].",
+		"en": "[color=#ff5e84]Kiss[/color] [color=#ffd8a8]{target}'s waist and stomach[/color] for [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 4, "type": "Action", "timer": 30,
+		"es": "Quítate [color=#ff5e84]una prenda tuya[/color] manteniendo contacto visual con [color=#ffd8a8]{target}[/color].",
+		"en": "Remove [color=#ff5e84]one of your items[/color] while locking eyes with [color=#ffd8a8]{target}[/color]."
+	},
+	{
+		"cat": 4, "type": "Action", "timer": 35,
+		"es": "[color=#ff5e84]Besa por dentro[/color] del [color=#ffd8a8]muslo de {target}[/color] durante [color=#ffd8a8]35s[/color].",
+		"en": "[color=#ff5e84]Kiss the inner thigh[/color] of [color=#ffd8a8]{target}[/color] for [color=#ffd8a8]35s[/color]."
+	},
+	{
+		"cat": 4, "type": "Action", "timer": 30,
+		"es": "Pon las manos de [color=#ffd8a8]{target}[/color] atrás y [color=#ff5e84]bésale a tu antojo[/color] [color=#ffd8a8]30s[/color].",
+		"en": "Hold [color=#ffd8a8]{target}'s hands[/color] back and [color=#ff5e84]kiss anywhere[/color] [color=#ffd8a8]30s[/color]."
+	},
+	{
+		"cat": 4, "type": "Secret", "timer": 0,
+		"es": "¿Quién [color=#ff5e84]toma el control[/color] ahora?",
+		"en": "Who [color=#ff5e84]takes control[/color] right now?",
+		"opt_a_es": "Yo mando", "opt_b_es": "Me dejo llevar",
+		"opt_a_en": "I lead", "opt_b_en": "Take control",
+		"forfeit_es": "[color=#ffd8a8]{target}[/color] elige qué [color=#ff5e84]prenda te quitas[/color].",
+		"forfeit_en": "[color=#ffd8a8]{target}[/color] picks what [color=#ff5e84]item you remove[/color]."
+	},
+	{
+		"cat": 4, "type": "Secret", "timer": 0,
+		"es": "¿Dónde prefieren las [color=#ff5e84]manos ahora[/color]?",
+		"en": "Where do you want [color=#ff5e84]hands right now[/color]?",
+		"opt_a_es": "En la cintura", "opt_b_es": "En los muslos",
+		"opt_a_en": "On the waist", "opt_b_en": "On the thighs",
+		"forfeit_es": "[color=#ff5e84]Acaricia ambas zonas[/color] de [color=#ffd8a8]{target}[/color] [color=#ffd8a8]15s[/color].",
+		"forfeit_en": "[color=#ff5e84]Caress both spots[/color] on [color=#ffd8a8]{target}[/color] [color=#ffd8a8]15s[/color]."
+	},
+
+	# ================= 5: SIN LÍMITES 18+ (10 CARTAS) =================
+	{
+		"cat": 5, "type": "Action", "timer": 60,
+		"es": "[color=#ffd8a8]60 segundos[/color]: [color=#ffd8a8]{target}[/color] pide [color=#ff5e84]lo que quiera[/color].",
+		"en": "[color=#ffd8a8]60 seconds[/color]: [color=#ffd8a8]{target}[/color] asks for [color=#ff5e84]anything[/color]."
+	},
+	{
+		"cat": 5, "type": "Action", "timer": 45,
+		"es": "[color=#ff5e84]Sujeta las muñecas[/color] de [color=#ffd8a8]{target}[/color] y bésale donde quieras [color=#ffd8a8]45s[/color].",
+		"en": "[color=#ff5e84]Hold[/color] [color=#ffd8a8]{target}'s wrists[/color] and kiss anywhere [color=#ffd8a8]45s[/color]."
+	},
+	{
+		"cat": 5, "type": "Action", "timer": 45,
+		"es": "[color=#ff5e84]Besa el abdomen[/color] y [color=#ffd8a8]caderas de {target}[/color] por [color=#ffd8a8]45s[/color].",
+		"en": "[color=#ff5e84]Kiss[/color] [color=#ffd8a8]{target}'s hips and stomach[/color] for [color=#ffd8a8]45s[/color]."
+	},
+	{
+		"cat": 5, "type": "Action", "timer": 60,
+		"es": "[color=#ff5e84]Venda los ojos[/color] de [color=#ffd8a8]{target}[/color] y provoca su piel [color=#ffd8a8]60s[/color].",
+		"en": "[color=#ff5e84]Blindfold[/color] [color=#ffd8a8]{target}[/color] and tease their skin [color=#ffd8a8]60s[/color]."
+	},
+	{
+		"cat": 5, "type": "Action", "timer": 45,
+		"es": "[color=#ff5e84]Quítale otra prenda[/color] a [color=#ffd8a8]{target}[/color] usando solo la boca o 1 mano.",
+		"en": "[color=#ff5e84]Remove an item[/color] from [color=#ffd8a8]{target}[/color] using 1 hand or mouth."
+	},
+	{
+		"cat": 5, "type": "Action", "timer": 60,
+		"es": "[color=#ffd8a8]{target}[/color] se acuesta: [color=#ff5e84]recorre todo su cuerpo[/color] con besos [color=#ffd8a8]60s[/color].",
+		"en": "[color=#ffd8a8]{target}[/color] lies back: [color=#ff5e84]kiss down their body[/color] for [color=#ffd8a8]60s[/color]."
+	},
+	{
+		"cat": 5, "type": "Action", "timer": 45,
+		"es": "[color=#ff5e84]Provoca a {target}[/color] durante [color=#ffd8a8]45s[/color] sin dejar que te toque.",
+		"en": "[color=#ff5e84]Tease {target}[/color] for [color=#ffd8a8]45s[/color] without letting them touch you."
+	},
+	{
+		"cat": 5, "type": "Action", "timer": 60,
+		"es": "[color=#ff5e84]Susurra tu deseo más caliente[/color] y hazlo con [color=#ffd8a8]{target}[/color] [color=#ffd8a8]60s[/color].",
+		"en": "[color=#ff5e84]Whisper your hottest wish[/color] and do it with [color=#ffd8a8]{target}[/color] [color=#ffd8a8]60s[/color]."
+	},
+	{
+		"cat": 5, "type": "Secret", "timer": 0,
+		"es": "¿[color=#ff5e84]Ritmo[/color] para el resto de la noche?",
+		"en": "[color=#ff5e84]Pace[/color] for the rest of the night?",
+		"opt_a_es": "Lento y sensual", "opt_b_es": "Intenso y salvaje",
+		"opt_a_en": "Slow & teasing", "opt_b_en": "Wild & intense",
+		"forfeit_es": "[color=#ff5e84]30s de besos intensos[/color] con [color=#ffd8a8]{target}[/color].",
+		"forfeit_en": "[color=#ff5e84]30s of intense kisses[/color] with [color=#ffd8a8]{target}[/color]."
+	},
+	{
+		"cat": 5, "type": "Secret", "timer": 0,
+		"es": "¿Dónde terminamos [color=#ff5e84]esta noche[/color]?",
+		"en": "Where do we finish [color=#ff5e84]tonight[/color]?",
+		"opt_a_es": "Aquí mismo ya", "opt_b_es": "Sin nada de ropa",
+		"opt_a_en": "Right here now", "opt_b_en": "Zero clothes on",
+		"forfeit_es": "[color=#ff5e84]Quítense una prenda[/color] los dos ahora mismo.",
+		"forfeit_en": "[color=#ff5e84]Both remove one item[/color] right now."
 	}
 ]
 
-const DICE_ACTIONS := [
-	{"es": "Besar lento", "en": "Slow kiss"},
-	{"es": "Acariciar suave", "en": "Soft caress"},
-	{"es": "Susurrar en", "en": "Whisper on"},
-	{"es": "Mordisquear", "en": "Gently nibble"},
-	{"es": "Soplar / Hielo", "en": "Blow / Ice on"},
-	{"es": "Recorrer con labios", "en": "Trace with lips"}
+const DICE_ACTIONS_ES := ["Besar lento", "Morder suave", "Susurrar en", "Acariciar", "Calentar", "Soplar en"]
+const DICE_BODY_ES := ["el cuello", "los labios", "la oreja", "el pecho", "la espalda", "el muslo"]
+
+const DICE_ACTIONS_EN := ["Slowly kiss", "Gently bite", "Whisper on", "Caress", "Warm up", "Blow softly on"]
+const DICE_BODY_EN := ["the neck", "the lips", "the ear", "the chest", "the lower back", "the thigh"]
+
+const WHEEL_FANTASIES_ES := [
+	"[color=#ff5e84]60s[/color] con [color=#ffd8a8]ojos vendados[/color]",
+	"[color=#ff5e84]Quitar 1 prenda[/color] muy lento",
+	"[color=#ff5e84]Beso de 30s[/color] sin manos",
+	"[color=#ff5e84]Masaje sensual[/color] por [color=#ffd8a8]1 minuto[/color]",
+	"[color=#ff5e84]Susurrar fantasía[/color] + beso",
+	"[color=#ffd8a8]1 minuto[/color] a [color=#ff5e84]tu merced[/color]",
+	"[color=#ff5e84]Hielo o labios[/color] por el [color=#ffd8a8]cuello[/color]",
+	"[color=#ff5e84]3 besos[/color] donde [color=#ffd8a8]tú elijas[/color]"
 ]
 
-const DICE_ZONES := [
-	{"es": "El cuello (15s)", "en": "The neck (15s)"},
-	{"es": "Los labios (15s)", "en": "The lips (15s)"},
-	{"es": "La oreja (15s)", "en": "The ear (15s)"},
-	{"es": "La espalda (20s)", "en": "The back (20s)"},
-	{"es": "Las muñecas", "en": "The wrists"},
-	{"es": "Donde tú elijas", "en": "Your choice"}
+const WHEEL_FANTASIES_EN := [
+	"[color=#ff5e84]60s[/color] [color=#ffd8a8]blindfolded[/color]",
+	"[color=#ff5e84]Remove 1 item[/color] slowly",
+	"[color=#ff5e84]30s kiss[/color] no hands",
+	"[color=#ffd8a8]1-min[/color] [color=#ff5e84]sensual massage[/color]",
+	"[color=#ff5e84]Whisper fantasy[/color] + kiss",
+	"[color=#ffd8a8]1 minute[/color] at [color=#ff5e84]your mercy[/color]",
+	"[color=#ff5e84]Ice or lips[/color] on the [color=#ffd8a8]neck[/color]",
+	"[color=#ff5e84]3 kisses[/color] [color=#ffd8a8]anywhere[/color]"
 ]
 
-const WHEEL_OUTCOMES := [
-	{"es": "Beso apasionado de 20 segundos", "en": "20-second passionate kiss"},
-	{"es": "Tu pareja manda por 1 minuto", "en": "Your partner commands for 1 minute"},
-	{"es": "Quítate una prenda a elección", "en": "Remove one item of clothing"},
-	{"es": "Brindis mirándose a los ojos", "en": "Toast while holding eye contact"},
-	{"es": "Masaje sensual de 30 segundos", "en": "30-second sensual massage"},
-	{"es": "Tira los Dados de Seducción", "en": "Roll the Seduction Dice"}
-]
-
-const DECK := [
-	# 1. Calentamiento
-	{"cat": 1, "type": "Truth", "time": 0, "es": "¿Qué fue lo primero que te atrajo de mí cuando nos conocimos?", "en": "What first attracted you to me when we met?", "twist_es": "Dilo a un centímetro de mis labios.", "twist_en": "Say it an inch from my lips."},
-	{"cat": 1, "type": "Secret", "time": 0, "es": "¿Qué beso prefieres ahora mismo?", "en": "Which kiss do you prefer right now?", "opt_a_es": "Lento en los labios", "opt_b_es": "Suave en el cuello", "opt_a_en": "Slow on the lips", "opt_b_en": "Soft on the neck", "twist_es": "Hagan los dos si coinciden.", "twist_en": "Do both if you match."},
-	{"cat": 1, "type": "Dare", "time": 20, "es": "Mírense fijo a los ojos durante 20 segundos sin reírse.", "en": "Hold unbroken eye contact for 20 seconds without laughing.", "twist_es": "Quien sonría primero da un beso lento.", "twist_en": "First to smile owes a slow kiss."},
-	{"cat": 1, "type": "Dare", "time": 20, "es": "Dibuja un corazón en su palma con la yema del dedo muy despacio.", "en": "Trace a slow heart on their palm with your fingertip.", "twist_es": "Termina con un beso en su muñeca.", "twist_en": "Finish with a kiss on their wrist."},
-	{"cat": 1, "type": "Drink", "time": 0, "es": "Brinden por esta noche y tomen un sorbo sin apartar la mirada.", "en": "Toast to tonight and take a sip without breaking eye contact.", "twist_es": "Séllenlo con un beso.", "twist_en": "Seal the toast with a kiss."},
-	{"cat": 1, "type": "Truth", "time": 0, "es": "Dime tres cosas de mí que te encantan en secreto.", "en": "Tell me three things about me you secretly adore.", "twist_es": "Susúrralas directamente en mi oído.", "twist_en": "Whisper them directly in my ear."},
-	{"cat": 1, "type": "Dare", "time": 30, "es": "Bailen lento abrazados durante 30 segundos, con o sin música.", "en": "Slow dance close together for 30 seconds, with or without music.", "twist_es": "Mantengan las frentes juntas.", "twist_en": "Keep your foreheads touching."},
-
-	# 2. Seducción
-	{"cat": 2, "type": "Secret", "time": 0, "es": "¿Cómo prefieres que empiece el próximo reto?", "en": "How should the next dare begin?", "opt_a_es": "Con los ojos vendados", "opt_b_es": "Con las luces bajas", "opt_a_en": "Blindfolded", "opt_b_en": "Lights dimmed", "twist_es": "Aplíquenlo de inmediato.", "twist_en": "Apply it immediately."},
-	{"cat": 2, "type": "Dare", "time": 25, "es": "Besa lentamente desde su mandíbula hasta la clavícula.", "en": "Kiss slowly from their jawline down to their collarbone.", "twist_es": "Tu pareja no puede moverse ni hablar.", "twist_en": "Your partner cannot move or speak."},
-	{"cat": 2, "type": "Truth", "time": 0, "es": "¿Qué caricia mía te enciende en menos de cinco segundos?", "en": "What touch of mine turns you on in under five seconds?", "twist_es": "Guía mi mano para hacerlo ahora mismo.", "twist_en": "Guide my hand to do it right now."},
-	{"cat": 2, "type": "Dare", "time": 20, "es": "Quédate a un milímetro de sus labios durante 20 segundos sin besar.", "en": "Hover a millimeter from their lips for 20 seconds without kissing.", "twist_es": "Al terminar el tiempo, bésense sin freno.", "twist_en": "When time is up, kiss passionately."},
-	{"cat": 2, "type": "Drink", "time": 0, "es": "Toma tu próximo sorbo sentado/a sobre el regazo de tu pareja.", "en": "Take your next sip sitting on your partner's lap.", "twist_es": "Quédate ahí durante el siguiente turno.", "twist_en": "Stay there for the next turn."},
-	{"cat": 2, "type": "Dare", "time": 30, "es": "Dale un masaje lento en el cuello respirando cerca de su oído.", "en": "Give a slow neck massage while breathing close to their ear.", "twist_es": "Termina mordisqueando suavemente su oreja.", "twist_en": "End by gently nibbling their earlobe."},
-
-	# 3. Intimidad
-	{"cat": 3, "type": "Secret", "time": 0, "es": "¿Qué rol te tienta más para hoy?", "en": "Which role tempts you more tonight?", "opt_a_es": "Llevar el control", "opt_b_es": "Dejarme llevar", "opt_a_en": "Take control", "opt_b_en": "Surrender control", "twist_es": "Intercambien roles por 2 turnos.", "twist_en": "Swap roles for 2 turns."},
-	{"cat": 3, "type": "Truth", "time": 0, "es": "¿Cuál es el recuerdo más apasionado que tienes de nosotros dos?", "en": "What is your most passionate memory of the two of us?", "twist_es": "Recrea los primeros diez segundos ahora.", "twist_en": "Recreate the first ten seconds right now."},
-	{"cat": 3, "type": "Dare", "time": 30, "es": "Con los ojos cerrados, explora su rostro y cuello solo con tus labios.", "en": "With eyes closed, explore their face and neck using only your lips.", "twist_es": "Silencio absoluto durante los 30 segundos.", "twist_en": "Complete silence for all 30 seconds."},
-	{"cat": 3, "type": "Dare", "time": 30, "es": "Abrázalo/a por detrás y susúrrale al oído lo que más deseas hoy.", "en": "Hold them from behind and whisper what you desire most tonight.", "twist_es": "Acaricia sus manos mientras lo dices.", "twist_en": "Caress their hands while whispering."},
-	{"cat": 3, "type": "Drink", "time": 0, "es": "Pasa el borde de tu copa por sus labios antes de compartir un sorbo.", "en": "Trace your glass rim across their lips before sharing a slow sip.", "twist_es": "Roba el último rastro con un beso.", "twist_en": "Steal the last drop with a kiss."},
-
-	# 4. Retos Atrevidos
-	{"cat": 4, "type": "Dice", "time": 20, "es": "Lanza los Dados de Seducción y cumple el reto que marquen.", "en": "Roll the Seduction Dice and perform the combination.", "twist_es": "Hazlo con los ojos cerrados.", "twist_en": "Do it with your eyes closed."},
-	{"cat": 4, "type": "Secret", "time": 0, "es": "¿Dónde prefieres que siga la noche después del juego?", "en": "Where should the night continue after this game?", "opt_a_es": "Aquí mismo", "opt_b_es": "En la habitación", "opt_a_en": "Right here", "opt_b_en": "In the bedroom", "twist_es": "Quien gane elige la primera prenda que cae.", "twist_en": "Winner picks the first clothing item to go."},
-	{"cat": 4, "type": "Dare", "time": 0, "es": "Quítate una prenda de ropa lentamente manteniendo contacto visual.", "en": "Slowly remove one piece of clothing while holding eye contact.", "twist_es": "Tu pareja elige qué prenda es.", "twist_en": "Your partner chooses which item."},
-	{"cat": 4, "type": "Dare", "time": 40, "es": "Sujeta suavemente sus muñecas y bésalo/a donde quieras por 40 segundos.", "en": "Gently hold their wrists and kiss them anywhere you want for 40s.", "twist_es": "Tu pareja no puede mover las manos.", "twist_en": "Your partner isn't allowed to move their hands."},
-	{"cat": 4, "type": "Dare", "time": 30, "es": "Baila de forma sensual para tu pareja durante 30 segundos.", "en": "Dance sensually for your partner for 30 seconds.", "twist_es": "Tiene prohibido tocarte hasta que acabes.", "twist_en": "They aren't allowed to touch you until time's up."},
-
-	# 5. Sin Límites 18+
-	{"cat": 5, "type": "Secret", "time": 0, "es": "¿Qué ritmo prefieres para los próximos minutos?", "en": "What pace do you want for the next few minutes?", "opt_a_es": "Lento y provocador", "opt_b_es": "Intenso y sin pausa", "opt_a_en": "Slow & teasing", "opt_b_en": "Intense & non-stop", "twist_es": "Demuéstrenlo durante 1 minuto.", "twist_en": "Prove it for 1 full minute."},
-	{"cat": 5, "type": "Dare", "time": 60, "es": "Mando Total: Tienes 1 minuto para pedir tres deseos sin que pueda negarse.", "en": "Total Command: You have 1 minute to give three orders they must obey.", "twist_es": "Debe pedirte permiso antes de hablar.", "twist_en": "They must ask permission before speaking."},
-	{"cat": 5, "type": "Dare", "time": 45, "es": "Quítale una prenda a tu pareja usando únicamente una mano o los labios.", "en": "Remove one item of your partner's clothing using one hand or your lips.", "twist_es": "Tómate tu tiempo para provocar.", "twist_en": "Take your time to tease them."},
-	{"cat": 5, "type": "Dare", "time": 60, "es": "El Límite: Provoca a tu pareja con besos por 1 minuto sin dejar que te toque.", "en": "The Edge: Tease your partner with kisses for 1 minute—they cannot touch you.", "twist_es": "Si se mueve, el minuto empieza de nuevo.", "twist_en": "If they move, the minute restarts."},
-	{"cat": 5, "type": "Dare", "time": 60, "es": "Apaguen la luz 1 minuto: solo vale guiarse por el tacto y la respiración.", "en": "Lights off for 1 minute: let touch and breathing make all the rules.", "twist_es": "Nadie puede decir una sola palabra.", "twist_en": "Neither of you may speak a word."}
+const CLIMAX_ENVELOPES := [
+	{
+		"title_es": "Sobre I",
+		"title_en": "Envelope I",
+		"es": "[color=#ffd8a8]5 minutos a ciegas[/color]: uno cierra los ojos y el otro tiene [color=#ff5e84]control total[/color].",
+		"en": "[color=#ffd8a8]5 minutes blindfolded[/color]: one closes eyes, the other has [color=#ff5e84]full control[/color]."
+	},
+	{
+		"title_es": "Sobre II",
+		"title_en": "Envelope II",
+		"es": "[color=#ff5e84]Deseo concedido[/color]: [color=#ffd8a8]{target}[/color] pide su fantasía favorita ahora.",
+		"en": "[color=#ff5e84]Wish granted[/color]: [color=#ffd8a8]{target}[/color] asks for their favorite fantasy now."
+	},
+	{
+		"title_es": "Sobre III",
+		"title_en": "Envelope III",
+		"es": "[color=#ff5e84]Fuera teléfonos[/color]: apagan la pantalla y continúan [color=#ffd8a8]sin reglas[/color].",
+		"en": "[color=#ff5e84]Phones down[/color]: turn off the screen and continue [color=#ffd8a8]with zero rules[/color]."
+	}
 ]
